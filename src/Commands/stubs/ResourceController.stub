@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Admin\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Admin\Resources\DummyResource;
+use Leeto\Admin\Traits\ControllerTrait;
+
+class DummyController extends Controller
+{
+    use ControllerTrait;
+
+    public function __construct()
+    {
+        $this->resource = new DummyResource();
+    }
+}

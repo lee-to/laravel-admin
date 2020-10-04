@@ -1,0 +1,1 @@
+@include("admin::components.fields.partials.file-container", ["itemView" => "thumbnail", "class" => "grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 m-5 mb-10", "value" => $value, "label" => $label, "attr" => $attr])

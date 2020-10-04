@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Admin\Resources;
+
+use Leeto\Admin\Components\Fields\ID;
+use Leeto\Admin\Resources\Resource;
+
+class DummyResource extends Resource
+{
+	public static $model = 'DummyModel';
+
+	public $title = "DummyTitle";
+
+	public function fields()
+	{
+		return [
+            ID::make("id")->sortable(),
+        ];
+	}
+
+	public function rules($item) {
+	    return [
+	    ];
+    }
+
+    public function search()
+    {
+        return ["id"];
+    }
+
+    public function filters()
+    {
+        return [];
+    }
+
+	public function attributes() {
+	    return [
+            "id" => "ID",
+        ];
+    }
+}
