@@ -3,6 +3,7 @@
 namespace Leeto\Admin\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class GenerateCommand extends Command
 {
@@ -41,8 +42,10 @@ class GenerateCommand extends Command
 
     public function createResource()
     {
-        $name = ucfirst($this->ask("Controller name?"));
         $name = ucfirst($this->argument("name"));
+        if(!$name) {
+            $name = ucfirst($this->ask("Controller name?"));
+        }
 
         $model = $this->option("model");
         $title = $this->option("title") ?? $name;
@@ -74,6 +77,7 @@ class GenerateCommand extends Command
         );
 
         $this->line("<info>{$name}Controller file was created:</info> ".str_replace(base_path(), '', $controller));
+        $this->line("<info>Add to route Route::resource('".Str::plural(Str::lower($name))."', {$name}Controller::class);</info>");
     }
 
     /**
