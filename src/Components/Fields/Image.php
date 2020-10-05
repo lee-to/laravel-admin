@@ -24,11 +24,11 @@ class Image extends Field implements FileInterface
 
     public function indexView($item) {
         if($this->multiple) {
-            $this->removeable(false);
+            $values = collect($item->{$this->name()})->map(function ($value) {
+                return "'".Storage::url($value)."'";
+            });
 
-            return collect($item->{$this->name()})->map(function ($value) {
-                return str_replace("\"", "'", view("admin::components.partials.thumbnail", ["type" => "carousel", "value" => $value, "field" => $this]));
-            })->implode("");
+            return view("admin::components.partials.carousel", ["value" => $values->implode(",")]);
         }
 
         return view("admin::components.partials.thumbnail", ["type" => "avatar", "value" => $item->{$this->name()}, "field" => $this]);

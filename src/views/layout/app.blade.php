@@ -45,6 +45,8 @@
             </div>
         </div>
 
+        @include('admin::partials.popups')
+
 		@yield('after-scripts')
 		
 		<script src="{{ asset('vendor/leeto-admin/js/app.js') }}"></script>
