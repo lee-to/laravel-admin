@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use Leeto\Admin\Controllers\IndexController;
+use Leeto\Admin\Controllers\AdminUserController;
 
 Route::prefix('admin')->name("admin.")->group(function () {
 
@@ -11,6 +12,7 @@ Route::prefix('admin')->name("admin.")->group(function () {
         Route::get("/", [IndexController::class, 'index'])->name("index");
         Route::any("/login", [IndexController::class, 'login'])->name("login");
         Route::get("/logout", [IndexController::class, 'logout'])->name("logout");
+        Route::resource("adminusers", AdminUserController::class);
 
         //
     });

@@ -3,6 +3,7 @@
 namespace Leeto\Admin\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Leeto\Admin\Commands\CreateUserCommand;
 use Leeto\Admin\Commands\GenerateCommand;
 use Leeto\Admin\Commands\InstallCommand;
 use Leeto\Admin\Components\FieldComponent;
@@ -18,6 +19,7 @@ class AdminServiceProvider extends ServiceProvider
     protected $commands = [
         InstallCommand::class,
         GenerateCommand::class,
+        CreateUserCommand::class,
     ];
 
     protected $routeMiddleware = [
@@ -51,13 +53,12 @@ class AdminServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([__DIR__.'/../lang' => resource_path('lang')], 'leeto-admin-lang');
+        $this->publishes([__DIR__.'/../migrations' => database_path('migrations')], 'laravel-admin-migrations');
         $this->publishes([__DIR__.'/../assets' => public_path('vendor/leeto-admin')], 'leeto-admin-assets');
 
         $this->publishes([
             __DIR__ . '/../config/admin.php' => config_path('admin.php'),
         ]);
-
-        $this->loadRoutesFrom(__DIR__. '/../routes/admin.php');
 
         if (file_exists($routes = app_path('Admin/routes.php'))) {
             $this->loadRoutesFrom($routes);

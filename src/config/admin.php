@@ -11,13 +11,20 @@ return [
         'guards' => [
             'admin' => [
                 'driver'   => 'session',
-                'provider' => 'users',
+                'provider' => 'admin',
             ],
         ],
 
         'remember' => true,
 
         'redirect_to' => 'admin/login',
+
+        'providers' => [
+            'admin' => [
+                'driver' => 'eloquent',
+                'model'  => \Leeto\Admin\Models\AdminUser::class,
+            ],
+        ],
     ],
 
     'route' => [
