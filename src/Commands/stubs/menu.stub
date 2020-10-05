@@ -1,3 +1,5 @@
 <?php
 
-return [];
+return [
+    ["class" =>\Leeto\Admin\Controllers\AdminUserController::class, "title" => "Администраторы"],
+];
