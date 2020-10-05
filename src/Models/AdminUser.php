@@ -2,13 +2,9 @@
 
 namespace Leeto\Admin\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class AdminUser extends Model implements AuthenticatableContract
+class AdminUser extends Authenticatable
 {
-    use Authenticatable;
-
     protected $fillable = ['email', 'password', 'name', 'avatar'];
 }
