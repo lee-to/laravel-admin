@@ -1,4 +1,4 @@
-<div class="relative" x-data="{isOpen: false, currentImage: '/storage/{{ $relation->{$attr["imageField"]} ?? '' }}', currentId: '{{ $relation->id ?? '0' }}',currentName: '{{ $relation->name ?? '-' }}'}" x-init="$refs.dropdown.classList.remove('hidden')">
+<div class="relative" x-data="initDropDown()" x-init="$refs.dropdown.classList.remove('hidden')">
     <span class="inline-block w-full rounded-md shadow-sm">
       <button @click="isOpen=!isOpen" type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
         <div class="flex items-center space-x-3">
@@ -16,10 +16,12 @@
       </button>
     </span>
 
-    <div :class="isOpen ? '' : 'hidden'" x-ref="dropdown" class="absolute mt-1 w-full rounded-md bg-white shadow-lg hidden">
-        <ul @click.away="isOpen = false" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" class="max-h-56 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5">
+    <div @click.away="isOpen = false" :class="isOpen ? '' : 'hidden'" x-ref="dropdown" class="absolute mt-1 w-full rounded-md bg-white shadow-lg hidden">
+        <input placeholder="Поиск" type="text" x-on:keydown="filterOptions()" x-model="search" value="" class="bg-white focus:outline-none focus:shadow-outline rounded-lg py-2 px-4 block w-full appearance-none leading-norma" />
+
+        <ul x-ref="ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" class="max-h-56 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5">
             @foreach($relationMethod->getRelated()->all() as $index => $option)
-                <li @click="isOpen=!isOpen;currentName = '{{ $option->{$attr["relationViewField"]} }}';currentId = '{{ $option->id }}'; currentImage = '/storage/{{ $option->{$attr["imageField"]} }}';" x-ref="item_{{ $index }}" role="option" :class="currentId != '{{$option->id}}' ? 'text-gray-900' : 'text-white bg-indigo-600'" class="cursor-default select-none relative py-2 pl-3 pr-9">
+                <li x-ref="item" @click="selectOption();search='';isOpen=!isOpen;currentName = '{{ $option->{$attr["relationViewField"]} }}';currentId = '{{ $option->id }}'; currentImage = '/storage/{{ $option->{$attr["imageField"]} }}';" data-value="{{ $option->{$attr["relationViewField"]} }}" role="option" :class="currentId != '{{$option->id}}' ? 'text-gray-900' : 'text-white bg-indigo-600'" class="cursor-default select-none relative py-2 pl-3 pr-9">
                     <div class="flex items-center space-x-3">
                         @if($option->{$attr["imageField"]})
                             <img src="/storage/{{ $option->{$attr["imageField"]} }}" alt="{{ $option->{$attr["relationViewField"]} }}" class="flex-shrink-0 h-6 w-6 rounded-full">
@@ -40,4 +42,34 @@
             @endforeach
         </ul>
     </div>
+
+    <script>
+        function initDropDown() {
+            return {
+                search: '',
+                isOpen: false,
+                currentImage: '/storage/{{ $relation->{$attr["imageField"]} ?? '' }}',
+                currentId: '{{ $relation->id ?? '0' }}',
+                currentName: '{{ $relation->name ?? '-' }}',
+                selectOption() {
+                    Array.prototype.slice.call(this.$refs.ul.getElementsByTagName("li")).forEach(function (li) {
+                        li.hidden = false;
+                    });
+                },
+                filterOptions() {
+                    var searchValue = this.search.toLowerCase();
+
+                    Array.prototype.slice.call(this.$refs.ul.getElementsByTagName("li")).forEach(function (li) {
+                        var value = li.getAttribute("data-value").toLowerCase();
+
+                        if(value.includes(searchValue)) {
+                            li.hidden = false;
+                        } else {
+                            li.hidden = true;
+                        }
+                    });
+                }
+            };
+        }
+    </script>
 </div>

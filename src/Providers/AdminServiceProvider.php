@@ -7,6 +7,7 @@ use Leeto\Admin\Commands\CreateUserCommand;
 use Leeto\Admin\Commands\GenerateCommand;
 use Leeto\Admin\Commands\InstallCommand;
 use Leeto\Admin\Components\FieldComponent;
+use Leeto\Admin\Components\Menu;
 use Leeto\Admin\Components\MenuComponent;
 use Leeto\Admin\Components\ModalComponent;
 use Leeto\Admin\Middleware\Authenticate;
@@ -76,6 +77,10 @@ class AdminServiceProvider extends ServiceProvider
         Blade::component('menu', MenuComponent::class);
         Blade::component('modal', ModalComponent::class);
         Blade::component('field', FieldComponent::class);
+
+        $this->app->singleton('Menu', function ($app) {
+            return new \Leeto\Admin\Components\Menu(include_once app_path("Admin/menu.php"));
+        });
     }
 
     /**

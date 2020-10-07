@@ -8,6 +8,8 @@
 
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
             <x-field :resource="$resource" :component="$component" :item="$item"></x-field>
+
+            @includeWhen($component->hint, 'admin::components.partials.hint', ['hint' => $component->hint])
         </dd>
     </div>
 @endif

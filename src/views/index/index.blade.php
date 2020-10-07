@@ -14,7 +14,7 @@
 
             <div class="mt-10">
                 <ul class="md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                    @foreach(\Leeto\Admin\Components\Menu::get() as $data)
+                    @foreach(app("Menu")->get() as $data)
                     <li class="mt-10 md:mt-0">
                         <div class="flex">
                             <div class="flex-shrink-0">

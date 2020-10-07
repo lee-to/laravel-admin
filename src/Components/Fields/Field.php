@@ -39,6 +39,16 @@ abstract class Field implements ViewComponent
     public $view;
 
     /**
+     * @var mixed
+     */
+    public $default;
+
+    /**
+     * @var string
+     */
+    public $hint;
+
+    /**
      * @var bool
      */
     public $sortable = false;
@@ -142,6 +152,24 @@ abstract class Field implements ViewComponent
      */
     public function required() {
         $this->required = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function default($default) {
+        $this->default = $default;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function hint($hint) {
+        $this->hint = $hint;
 
         return $this;
     }

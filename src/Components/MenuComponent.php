@@ -6,11 +6,6 @@ use Illuminate\View\Component;
 
 class MenuComponent extends Component
 {
-    public function __construct()
-    {
-
-    }
-
     /**
      * Get the view / contents that represent the component.
      *
@@ -18,7 +13,7 @@ class MenuComponent extends Component
      */
     public function render()
     {
-        $data = Menu::get();
+        $data = app("Menu")->get();
 
         return view('admin::components.menu', [
             "data" => $data,

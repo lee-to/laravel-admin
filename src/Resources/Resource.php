@@ -187,7 +187,7 @@ abstract class Resource implements ResourceInterface
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function component(Model $item, ViewComponent $component, $type) {
-        if ($component instanceof RelationInterface) {
+        if ($component instanceof RelationInterface && method_exists($component, "options")) {
             $component->options(collect($item->{$component->relation()}()->getRelated()->all())->pluck($component->relationViewField(), "id")->toArray());
         }
 

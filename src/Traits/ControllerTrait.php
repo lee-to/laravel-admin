@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Leeto\Admin\Components\Fields\SlideField;
+use Leeto\Admin\Components\RelationInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -111,7 +112,7 @@ trait ControllerTrait {
 
             if($item->save()) {
                 foreach ($fields as $field) {
-                    if($field instanceof HasMany) {
+                    if($field instanceof RelationInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "BelongsToMany") {
                         if($value = $field->save()) {
                             $item->{$field->relation()}()->sync($value);
                         }
