@@ -2,6 +2,7 @@
 
 return [
     'title' => env('ADMIN_TITLE', 'Laravel'),
+	'logo' => env('ADMIN_LOGO', ''),
 
     'auth' => [
         'controller' => Leeto\Admin\Controllers\IndexController::class,

@@ -37,9 +37,7 @@
         @if($resource->exportFields()->count())
             <div class="flex items-center select-none mt-5">
                 <a href="{{ $resource->route("index") }}?_export=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center">
-                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    @include("admin::partials.icons.export", ["size" => 4, "class" => "mr-2", "color" => "gray"])
 
                     <span>{{ trans("admin.export") }}</span>
                 </a>
@@ -56,9 +54,7 @@
     <div class="mt-8"></div>
 
     <a href="{{ $resource->route("create") }}" class="inline-flex  items-center bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-        </svg>
+        @include("admin::partials.icons.add", ["size" => 4, "class" => "mr-2", "color" => "blue"])
 
         <span>{{ trans('admin.create') }}</span>
     </a>

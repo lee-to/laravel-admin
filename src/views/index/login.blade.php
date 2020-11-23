@@ -4,7 +4,10 @@
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full">
             <div>
-                <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg" alt="Workflow">
+				@if(config("admin.logo"))
+					<img class="mx-auto h-12 w-auto" src="{{ config("admin.logo") }}" alt="{{ config("admin.title") }}">
+				@endif
+				
                 <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                     {{ trans('admin.login.authorization') }}
                 </h2>

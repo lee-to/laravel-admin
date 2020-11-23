@@ -4,7 +4,11 @@
     <div class="flex items-center justify-center mt-8">
         <div class="flex items-center">
             <a href="{{ route("admin.index") }}">
-                <img class="rounded-full w-10 h-10 mb-3 mx-auto" src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg" alt="">
+				@if(config("admin.logo"))
+					<img class="rounded-full w-10 h-10 mb-3 mx-auto" src="{{ config("admin.logo") }}" alt="{{ config("admin.title") }}">
+				@else
+					{{ config("admin.logo") }}
+				@endif
             </a>
         </div>
     </div>
