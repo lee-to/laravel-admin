@@ -5,7 +5,7 @@
             @method("delete")
             <input name="ids" type="hidden" value="" class="actionBarIds">
 
-            @if(isset($resource->actions["delete"]))
+            @if(in_array("delete", $resource->actions))
                 <button class="text-indigo-600 hover:text-indigo-900 inline-block">
                     @include("admin::partials.icons.delete", ["size" => 6, "class" => "mr-2", "color" => "red"])
                 </button>

@@ -137,7 +137,7 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        if(!isset($this->resource->actions["add"])) {
+        if(!in_array("add", $this->resource->actions)) {
             return redirect($this->resource->route("index"));
         }
 
@@ -149,7 +149,7 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id) {
-        if(!isset($this->resource->actions["edit"])) {
+        if(!in_array("edit", $this->resource->actions)) {
             return redirect($this->resource->route("index"));
         }
 
@@ -169,7 +169,7 @@ trait ControllerTrait {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update($id, Request $request) {
-        if(!isset($this->resource->actions["edit"])) {
+        if(!in_array("edit", $this->resource->actions)) {
             return redirect($this->resource->route("index"));
         }
 
@@ -184,7 +184,7 @@ trait ControllerTrait {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request) {
-        if(!isset($this->resource->actions["edit"]) && !isset($this->resource->actions["add"])) {
+        if(!in_array("edit", $this->resource->actions) && !in_array("add", $this->resource->actions)) {
             return redirect($this->resource->route("index"));
         }
 
@@ -198,7 +198,7 @@ trait ControllerTrait {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id) {
-        if(!isset($this->resource->actions["delete"])) {
+        if(!in_array("delete", $this->resource->actions)) {
             return redirect($this->resource->route("index"));
         }
 

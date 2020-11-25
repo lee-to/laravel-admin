@@ -1,10 +1,10 @@
-@if(isset($resource->actions["edit"]))
+@if(in_array("edit", $resource->actions))
     <a href="{{ $resource->route("edit", $item->id) }}" class="text-indigo-600 hover:text-indigo-900 inline-block">
         @include("admin::partials.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "gray"])
     </a>
 @endif
 
-@if(isset($resource->actions["delete"]))
+@if(in_array("delete", $resource->actions))
     <x-modal>
         {{ trans("admin.deleteareyousure") }}
 

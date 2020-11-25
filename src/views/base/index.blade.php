@@ -3,7 +3,7 @@
 @section('sidebar-inner')
     @parent
 
-    @if(isset($resource->actions["add"]))
+    @if(in_array("add", $resource->actions))
         <div class="text-center mt-8">
             <a href="{{ $resource->route("create") }}" class="bg-blue-500 hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                 {{ trans('admin.create') }}
@@ -55,7 +55,7 @@
 
     <div class="mt-8"></div>
 
-    @if(isset($resource->actions["add"]))
+    @if(in_array("add", $resource->actions))
         <a href="{{ $resource->route("create") }}" class="inline-flex  items-center bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
             @include("admin::partials.icons.add", ["size" => 4, "class" => "mr-2", "color" => "blue"])
 

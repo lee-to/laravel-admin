@@ -4,6 +4,7 @@ namespace Leeto\Admin\Components\Fields;
 
 
 use Leeto\Admin\Traits\Fields\SelectTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class Select extends Field
 {
