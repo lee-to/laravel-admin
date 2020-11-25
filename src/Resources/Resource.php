@@ -173,7 +173,7 @@ abstract class Resource implements ResourceInterface
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed|string
      */
     public function value(Model $item, Field $field) {
-        return $field instanceof SlideField || $item->{$field->name()} ? $field->indexView($item) : '';
+        return $field instanceof SlideField || isset($item->{$field->name()}) ? $field->indexView($item) : '';
     }
 
     /**
@@ -182,7 +182,7 @@ abstract class Resource implements ResourceInterface
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed|string
      */
     public function exportValue(Model $item, Field $field) {
-        return $field instanceof SlideField || $item->{$field->name()} ? $field->exportView($item) : '';
+        return $field instanceof SlideField || isset($item->{$field->name()}) ? $field->exportView($item) : '';
     }
 
     /**
