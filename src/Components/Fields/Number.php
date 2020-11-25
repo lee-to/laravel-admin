@@ -38,7 +38,7 @@ class Number extends Field
         if($this->stars) {
             return view("admin::components.listing.partials.stars", ["value" => $item->{$this->name()}]);
         } else {
-            return parent::indexView($item->{$this->name()});
+            return parent::indexView($item);
         }
     }
 

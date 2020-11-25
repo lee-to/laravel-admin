@@ -5,7 +5,7 @@
         <div class="flex items-center">
             <a href="{{ route("admin.index") }}">
 				@if(config("admin.logo"))
-					<img class="rounded-full w-10 h-10 mb-3 mx-auto" src="{{ config("admin.logo") }}" alt="{{ config("admin.title") }}">
+					<img class="rounded-full h-10 mb-3 mx-auto" src="{{ config("admin.logo") }}" alt="{{ config("admin.title") }}">
 				@else
 					{{ config("admin.logo") }}
 				@endif

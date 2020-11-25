@@ -3,11 +3,13 @@
 @section('sidebar-inner')
     @parent
 
-    <div class="text-center mt-8">
-        <a href="{{ $resource->route("create") }}" class="bg-blue-500 hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-            {{ trans('admin.create') }}
-        </a>
-    </div>
+    @if(isset($resource->actions["add"]))
+        <div class="text-center mt-8">
+            <a href="{{ $resource->route("create") }}" class="bg-blue-500 hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                {{ trans('admin.create') }}
+            </a>
+        </div>
+    @endif
 @endsection
 
 @section('header-inner')
@@ -53,11 +55,13 @@
 
     <div class="mt-8"></div>
 
-    <a href="{{ $resource->route("create") }}" class="inline-flex  items-center bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        @include("admin::partials.icons.add", ["size" => 4, "class" => "mr-2", "color" => "blue"])
+    @if(isset($resource->actions["add"]))
+        <a href="{{ $resource->route("create") }}" class="inline-flex  items-center bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            @include("admin::partials.icons.add", ["size" => 4, "class" => "mr-2", "color" => "blue"])
 
-        <span>{{ trans('admin.create') }}</span>
-    </a>
+            <span>{{ trans('admin.create') }}</span>
+        </a>
+    @endif
 
     <div class="mt-8"></div>
 

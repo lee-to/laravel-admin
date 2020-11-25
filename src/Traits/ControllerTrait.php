@@ -137,6 +137,10 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
+        if(!isset($this->resource->actions["add"])) {
+            return redirect($this->resource->route("index"));
+        }
+
         return $this->_view_edit();
     }
 
@@ -145,6 +149,10 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id) {
+        if(!isset($this->resource->actions["edit"])) {
+            return redirect($this->resource->route("index"));
+        }
+
         $item = $this->resource->getModel()->where(["id" => $id])->firstOrFail();
 
         return $this->_view_edit($item);
@@ -161,6 +169,10 @@ trait ControllerTrait {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update($id, Request $request) {
+        if(!isset($this->resource->actions["edit"])) {
+            return redirect($this->resource->route("index"));
+        }
+
         $item = $this->resource->getModel()->where(["id" => $id])->firstOrFail();
 
         return $this->_save($request, $item);
@@ -172,6 +184,10 @@ trait ControllerTrait {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request) {
+        if(!isset($this->resource->actions["edit"]) && !isset($this->resource->actions["add"])) {
+            return redirect($this->resource->route("index"));
+        }
+
         $item = $this->resource->getModel();
 
         return $this->_save($request, $item);
@@ -182,6 +198,10 @@ trait ControllerTrait {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id) {
+        if(!isset($this->resource->actions["delete"])) {
+            return redirect($this->resource->route("index"));
+        }
+
         if(request()->has("ids")) {
             $this->resource->getModel()->whereIn("id", explode(";", request("ids")))->delete();
         } else {

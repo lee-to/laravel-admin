@@ -5,10 +5,13 @@
             @method("delete")
             <input name="ids" type="hidden" value="" class="actionBarIds">
 
-            <button class="text-indigo-600 hover:text-indigo-900 inline-block">
-                @include("admin::partials.icons.delete", ["size" => 6, "class" => "mr-2", "color" => "red"])
-            </button>
+            @if(isset($resource->actions["delete"]))
+                <button class="text-indigo-600 hover:text-indigo-900 inline-block">
+                    @include("admin::partials.icons.delete", ["size" => 6, "class" => "mr-2", "color" => "red"])
+                </button>
+            @endif
         </form>
+
 
         <script>
             function actionBarHandler() {

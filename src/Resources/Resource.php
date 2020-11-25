@@ -45,6 +45,11 @@ abstract class Resource implements ResourceInterface
     public $subtitle;
 
     /**
+     * @var
+     */
+    public $actions = ["add", "edit", "delete"];
+
+    /**
      * @return array
      */
     abstract function attributes();

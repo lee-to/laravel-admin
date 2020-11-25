@@ -11,7 +11,7 @@
         @endforeach
 
         <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-            @include("admin::components.listing.partials.actions", ["item" => $item])
+            @include("admin::components.listing.partials.actions", ["item" => $item, "resource" => $resource])
         </td>
     </tr>
 @endforeach

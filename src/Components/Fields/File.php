@@ -22,7 +22,11 @@ class File extends Field implements FileInterface
             $this->removeable(false);
 
             return collect($item->{$this->name()})->map(function ($value, $key) {
-                return str_replace("\"", "'", view("admin::components.partials.file", ["type" => "single", "value" => $value, "field" => $this, "index" => $key]));
+                return str_replace("\"", "'", view("admin::components.partials.file", [
+                        "value" => $value,
+                        "index" => $key,
+                        "attr" => $this->attributes()
+                ]));
             })->implode("");
         }
 
