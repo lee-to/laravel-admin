@@ -33,9 +33,11 @@ trait QueryTrait {
 
         if(request()->has("order")) {
             $model = $model->orderBy(request("order.field"), request("order.type"));
+        } elseif($this->defaultSortField) {
+            $model = $model->orderBy($this->defaultSortField, $this->defaultSortType);
         }
 
-        return $model->paginate(5);
+        return $model->paginate($this->itemsPerPage);
     }
 
     /**

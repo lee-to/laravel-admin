@@ -23,14 +23,14 @@
                                 @foreach($attr["columns"] as $columnName => $columnLabel)
                                     <td class="px-6 py-4 whitespace-no-wrap">
                                         @if($attr["types"][$columnName] == "Text")
-                                            @include("admin::components.fields.text", ["value" => "", "attr" => [
+                                            @include("admin::components.fields.text", ["value" => "", "label" => $attr["columns"][$columnName], "attr" => [
                                                 "type" => "text",
                                                 "name" => "{$attr["name"]}[{$columnName}][]",
                                                 "required" => false,
                                                 "_attr" => "x-model='field.{$columnName}'"
                                             ]])
                                         @elseif($attr["types"][$columnName] == "Select")
-                                            @include("admin::components.fields.select", ["value" => "", "attr" => [
+                                            @include("admin::components.fields.select", ["value" => "", "label" => $attr["columns"][$columnName], "attr" => [
                                                 "type" => "text",
                                                 "name" => "{$attr["name"]}[{$columnName}][]",
                                                 "required" => false,
@@ -38,7 +38,7 @@
                                                 "_attr" => "x-model='field.{$columnName}'"
                                             ]])
                                         @elseif($attr["types"][$columnName] == "Checkbox")
-                                            @include("admin::components.fields.text", ["value" => "1", "attr" => [
+                                            @include("admin::components.fields.text", ["value" => "1", "label" => $attr["columns"][$columnName], "attr" => [
                                                 "type" => "checkbox",
                                                 "name" => "{$attr["name"]}[{$columnName}][]",
                                                 "required" => false,

@@ -50,6 +50,21 @@ abstract class Resource implements ResourceInterface
     public $actions = ["add", "edit", "delete"];
 
     /**
+     * @var null
+     */
+    public $defaultSortField = null;
+
+    /**
+     * @var string
+     */
+    public $defaultSortType = "DESC";
+
+    /**
+     * @var int
+     */
+    public $itemsPerPage = 5;
+
+    /**
      * @return array
      */
     abstract function attributes();
@@ -110,6 +125,10 @@ abstract class Resource implements ResourceInterface
         });
     }
 
+    /**
+     * @param $type
+     * @return array|mixed
+     */
     public function getAssets($type) {
         $assets = [];
 
@@ -122,6 +141,9 @@ abstract class Resource implements ResourceInterface
         return $assets[$type] ?? [];
     }
 
+    /**
+     * @return string
+     */
     public function getModelName() : string {
         return static::$model;
     }
