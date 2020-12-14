@@ -1,4 +1,6 @@
 <div class="w-full">
+    {!! $resource->extensions("editTabs", $item) !!}
+
     @if (isset($errors) && $errors->any())
         @foreach ($errors->all() as $error)
             <div class="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3" role="alert">
@@ -9,6 +11,7 @@
     @endif
 
     <form class="bg-white shadow-md rounded mb-4" action="{{ $resource->route(($item->exists ? "update" : "store"), $item->id) }}" method="POST" enctype="multipart/form-data">
+
         {{ csrf_field() }}
 
         @if($item->exists)
@@ -30,9 +33,7 @@
         @endforeach
 
         <div class="px-10 py-10 bg-blue-100">
-            <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                {{ trans("admin.save") }}
-            </button>
+            @include('admin::components.form.partials.btn', ["type" => "submit", "class" => "", "name" => trans("admin.save")])
         </div>
     </form>
 </div>

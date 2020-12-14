@@ -102,9 +102,23 @@ abstract class Resource implements ResourceInterface
      * @return \Illuminate\Support\Collection
      */
     public function formFields() {
-        return collect($this->fields())->filter(function ($value) {
+        $fields = collect();
+
+        if(app("AdminExtensions")) {
+            foreach (app("AdminExtensions") as $extension) {
+                $extensionFields = collect($extension->formFields())->filter(function ($value) {
+                    return $value->form;
+                });
+
+                $fields = $fields->merge($extensionFields);
+            }
+        }
+
+        $fields = $fields->merge(collect($this->fields())->filter(function ($value) {
             return $value->form;
-        });
+        }));
+
+        return $fields;
     }
 
     /**
@@ -219,5 +233,19 @@ abstract class Resource implements ResourceInterface
         }
 
         return view("admin::components.{$type}.component", ["resource" => $this, "item" => $item, "component" => $component]);
+    }
+
+    public function extensions($name, Model $item) {
+        $views = "";
+
+        if(app("AdminExtensions")) {
+            foreach (app("AdminExtensions") as $extension) {
+                if(method_exists($extension, $name)) {
+                    $views .= $extension->{$name}($item);
+                }
+            }
+        }
+
+        return $views;
     }
 }

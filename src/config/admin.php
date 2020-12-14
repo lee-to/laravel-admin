@@ -35,4 +35,8 @@ return [
 
         'middleware' => ['web', 'admin'],
     ],
+
+    'extensions' => [
+        //
+    ],
 ];

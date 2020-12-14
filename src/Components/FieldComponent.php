@@ -24,6 +24,11 @@ class FieldComponent extends Component
     public function __construct(ResourceInterface $resource, ViewComponent $component, $item = null)
     {
         $this->value = $item && $component->type() != "password" ? $item->{$component->name()} : old($component->name());
+
+        if(is_null($this->value) || $this->value == "") {
+            $this->value = $component->default;
+        }
+
         $this->label = $resource->label($component);
         $this->view = $component->getView();
 
