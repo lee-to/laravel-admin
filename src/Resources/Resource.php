@@ -64,6 +64,11 @@ abstract class Resource implements ResourceInterface
      */
     public $itemsPerPage = 5;
 
+
+    public $baseIndexView = "admin::base.index";
+
+    public $baseEditView = "admin::base.edit";
+
     /**
      * @return array
      */

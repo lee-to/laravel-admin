@@ -29,7 +29,7 @@ trait ControllerTrait {
         if(request()->has("_export")) {
             return $this->_export();
         }
-        return view("admin::base.index", [
+        return view($this->resource->baseIndexView, [
             "resource" => $this->resource,
         ]);
     }
@@ -74,7 +74,7 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function _view_edit($item = null) {
-        return view("admin::base.edit", [
+        return view($this->resource->baseEditView, [
             "resource" =>  $this->resource,
             "item" => $item ? $item : $this->resource->getModel(),
         ]);
