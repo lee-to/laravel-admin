@@ -55,7 +55,6 @@ class InstallCommand extends Command
 
         $this->makeDir('Controllers');
         $this->makeDir('Resources');
-        $this->makeDir('routes');
 
         $this->createRoutesFile();
 

@@ -23,10 +23,34 @@ class Menu
 
         if(is_array($this->menu)) {
             foreach ($this->menu as $data) {
-                $menuData[] = ["url" => action([$data["class"], 'index']), "data" => $data, "current" => Str::contains(request()->route()->getActionName(), $data["class"])];
+                $dropdown = isset($data["dropdown"]) ? collect($data["dropdown"]) : collect();
+
+                $dropdown = $dropdown->map(function ($item) {
+                    return [
+                        "url" => action([$item["class"], $item["action"] ?? 'index']),
+                        "data" => $item,
+                        "current" => $this->current($item["class"], $item["action"] ?? null)
+                    ];
+                });
+
+                $menuData[] = [
+                    "url" => action([$data["class"], $data["action"] ?? 'index']),
+                    "data" => $data,
+                    "current" => $this->current($data["class"], $data["action"] ?? null),
+                    "icon" => $data["icon"] ?? 'app',
+                    "dropdown" => $dropdown
+                ];
             }
         }
 
         return $menuData;
+    }
+
+    protected function current($class, $action = null) {
+        if($action) {
+            return request()->route()->getActionName() == "{$class}@{$action}";
+        }
+
+        return Str::contains($class, Str::before(request()->route()->getActionName(), "@"));
     }
 }

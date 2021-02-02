@@ -8,10 +8,12 @@
         </button>
     </div>
 
-    <div class="flex items-center">
+    <div class="items-center">
         @section("header-inner")
 
         @show
+
+        <x-header-buttons />
     </div>
 
     <div class="flex items-center">

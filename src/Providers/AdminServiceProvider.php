@@ -7,6 +7,7 @@ use Leeto\Admin\Commands\CreateUserCommand;
 use Leeto\Admin\Commands\GenerateCommand;
 use Leeto\Admin\Commands\InstallCommand;
 use Leeto\Admin\Components\FieldComponent;
+use Leeto\Admin\Components\HeaderButtonsComponent;
 use Leeto\Admin\Components\MenuComponent;
 use Leeto\Admin\Components\ModalComponent;
 use Leeto\Admin\Middleware\Authenticate;
@@ -74,6 +75,7 @@ class AdminServiceProvider extends ServiceProvider
 
         Blade::withoutDoubleEncoding();
         Blade::component('menu', MenuComponent::class);
+        Blade::component('header-buttons', HeaderButtonsComponent::class);
         Blade::component('modal', ModalComponent::class);
         Blade::component('field', FieldComponent::class);
 
