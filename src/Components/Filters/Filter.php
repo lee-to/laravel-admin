@@ -32,6 +32,11 @@ abstract class Filter implements ViewComponent
      */
     public $view;
 
+    /**
+     * @var mixed
+     */
+    public $default;
+
     public static function make(...$arguments)
     {
         return new static(...$arguments);
@@ -72,6 +77,15 @@ abstract class Filter implements ViewComponent
     public function relationViewField() : string
     {
         return $this->relationViewField;
+    }
+
+    /**
+     * @return $this
+     */
+    public function default($default) {
+        $this->default = $default;
+
+        return $this;
     }
 
     /**
