@@ -1,11 +1,13 @@
 <div>
-    <select class="hidden" x-cloak id="multi_select_{{ $attr["name"] }}" multiple name="{{ $attr["name"] }}[]" {{ $attr["required"] ? "required" : "" }}>
+    <select {!! $attr["_attr"] ?? '' !!}
+            class="hidden" x-cloak id="multi_select_{{ $attr["originalName"] }}" multiple
+            name="{{ $attr["name"] }}" {{ $attr["required"] ? "required" : "" }}>
         @foreach($attr["options"] as $optionValue => $optionName)
             <option @if($value->contains("id", "=", $optionValue)) selected @endif value="{{ $optionValue }}">{{ $optionName }}</option>
         @endforeach
     </select>
 
-    <div x-data="dropdown()" x-init="loadOptions()" class="w-full mx-auto">
+    <div x-data="dropdown_{{ $attr["originalName"] }}()" x-init="loadOptions()" class="w-full mx-auto">
         <input type="hidden" x-bind:value="selectedValues()">
 
         <div class="inline-block relative min-w-48">
@@ -87,8 +89,8 @@ c0.27-0.268,0.707-0.268,0.979,0l7.908,7.83c0.27,0.268,0.27,0.701,0,0.969c-0.271,
 
 
     <script>
-        function dropdown() {
-            const options = document.getElementById("multi_select_{{ $attr["name"] }}");
+        function dropdown_{{ $attr["originalName"] }}() {
+            const options = document.getElementById("multi_select_{{ $attr["originalName"] }}");
 
             return {
                 options: [],

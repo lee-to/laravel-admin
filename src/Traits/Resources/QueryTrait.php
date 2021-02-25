@@ -18,7 +18,7 @@ trait QueryTrait {
     /**
      * @return mixed
      */
-    public function query() {
+    public function paginate() {
         $model = $this->getModel();
 
         if(request()->has("search") && count($this->search())) {
@@ -36,24 +36,6 @@ trait QueryTrait {
         } elseif($this->defaultSortField) {
             $model = $model->orderBy($this->defaultSortField, $this->defaultSortType);
         }
-
-        return $model;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function all() {
-        $model = $this->query();
-
-        return $model->get();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function paginate() {
-        $model = $this->query();
 
         return $model->paginate($this->itemsPerPage);
     }

@@ -38,7 +38,7 @@
 
         @if($resource->exportFields()->count())
             <div class="flex items-center select-none mt-5">
-                <a href="{{ $resource->exportUrl() }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center">
+                <a href="{{ $resource->route("index") }}?_export=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center">
                     @include("admin::partials.icons.export", ["size" => 4, "class" => "mr-2", "color" => "gray"])
 
                     <span>{{ trans("admin.export") }}</span>

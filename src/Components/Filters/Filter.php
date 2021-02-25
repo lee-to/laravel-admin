@@ -3,8 +3,10 @@
 namespace Leeto\Admin\Components\Filters;
 
 
+use Leeto\Admin\Components\Fields\Field;
 use Leeto\Admin\Components\ViewComponent;
 use Illuminate\Support\Str;
+use Leeto\Admin\Traits\Fields\SimpleFieldTrait;
 
 /**
  * Class Filter
@@ -12,6 +14,8 @@ use Illuminate\Support\Str;
  */
 abstract class Filter implements ViewComponent
 {
+    use SimpleFieldTrait;
+
     /**
      * @var string
      */
@@ -33,9 +37,9 @@ abstract class Filter implements ViewComponent
     public $view;
 
     /**
-     * @var mixed
+     * @var bool
      */
-    public $default;
+    public $xModel = false;
 
     public static function make(...$arguments)
     {
@@ -80,19 +84,19 @@ abstract class Filter implements ViewComponent
     }
 
     /**
-     * @return $this
-     */
-    public function default($default) {
-        $this->default = $default;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getView() : string
     {
         return $this->view;
+    }
+
+    /**
+     * @return $this
+     */
+    public function xModel() {
+        $this->xModel = true;
+
+        return $this;
     }
 }

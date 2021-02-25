@@ -51,7 +51,9 @@ class CheckboxTree extends Field implements RelationInterface
         $formatted = [];
 
         foreach ($data as $item) {
-            $formatted[$item->{$this->parentColumn}][$item->id] = $item;
+            $parent = is_null($item->{$this->parentColumn}) ? 0 : $item->{$this->parentColumn};
+
+            $formatted[$parent][$item->id] = $item;
         }
 
         return $formatted;

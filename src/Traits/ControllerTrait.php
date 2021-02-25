@@ -2,6 +2,7 @@
 
 namespace Leeto\Admin\Traits;
 
+use App\Models\OrderProduct;
 use Leeto\Admin\Components\Fields\FileInterface;
 use Leeto\Admin\Components\Fields\HasMany;
 use Leeto\Admin\Components\Fields\Line;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Leeto\Admin\Components\Fields\SlideField;
+use Leeto\Admin\Components\Fields\SubItemInterface;
 use Leeto\Admin\Components\RelationInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -49,7 +51,7 @@ trait ControllerTrait {
 
 
         $line = 2;
-        foreach ($this->resource->all() as $item) {
+        foreach ($this->resource->getModel()->all() as $item) {
             $letter = "A";
             foreach ($this->resource->exportFields() as $index => $field) {
                 $sheet->setCellValue($letter . $line, $this->resource->exportValue($item, $field));
@@ -91,7 +93,7 @@ trait ControllerTrait {
             Validator::make($request->all(), $this->resource->rules($item), $this->resource->messages(), $this->resource->attributes())->validate();
 
             $data = [];
-            $fields = $this->resource->fields();
+            $fields = $this->resource->getFields();
 
             /* @var \Leeto\Admin\Components\Fields\Field $field */
             foreach ($fields as $field) {
@@ -115,6 +117,39 @@ trait ControllerTrait {
                     if($field instanceof RelationInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "BelongsToMany") {
                         if($value = $field->save()) {
                             $item->{$field->relation()}()->sync($value);
+                        }
+                    } elseif($field instanceof SubItemInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "HasMany") {
+                        if($value = $field->save()) {
+                            $item->{$field->relation()}()->delete();
+
+                            $value = collect($value)->map(function ($v) use($field, $item) {
+                                $relatedClass = $item->{$field->relation()}()->getRelated();
+                                
+                                $newItem = new $relatedClass($v);
+                                $newItem->{$item->{$field->relation()}()->getForeignKeyName()} = $item->id;
+                                $newItem->save();
+
+                                if($subFields = $field->getSubFields()) {
+                                    foreach ($subFields as $subField) {
+                                        $newItem->{$subField->relation()}()->delete();
+                                        $subRelatedClass = $newItem->{$subField->relation()}()->getRelated();
+
+                                        if(isset($v[$subField->relation()])) {
+                                            foreach ($v[$subField->relation()] as $vv) {
+                                                $newSubItem = new $subRelatedClass($vv);
+                                                $newSubItem->{$newItem->{$subField->relation()}()->getForeignKeyName()} = $newItem->id;
+                                                $newSubItem->save();
+
+                                                $newItem->{$subField->relation()}()->save($newSubItem);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                return $newItem;
+                            });
+
+                            $item->{$field->relation()}()->saveMany($value);
                         }
                     } elseif($field instanceof SlideField) {
                         $item->{$field->minName} = request($field->minName);
@@ -154,6 +189,8 @@ trait ControllerTrait {
         }
 
         $item = $this->resource->getModel()->where(["id" => $id])->firstOrFail();
+
+        $this->resource->setItem($item);
 
         return $this->_view_edit($item);
     }

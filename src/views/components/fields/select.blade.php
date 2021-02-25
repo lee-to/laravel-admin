@@ -3,6 +3,6 @@
         <option value="">{{ $attr["default"] }}</option>
     @endif
     @foreach($attr["options"] as $optionValue => $optionName)
-        <option @if($value === $optionValue) selected @endif value="{{ $optionValue }}">{{ $optionName }}</option>
+        <option @if($value == $optionValue) selected @endif value="{{ $optionValue }}">{{ $optionName }}</option>
     @endforeach
 </select>

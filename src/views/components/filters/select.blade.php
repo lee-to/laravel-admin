@@ -3,5 +3,4 @@
     "name" => "filters[{$filter->name()}]",
     "required" => false,
     "options" => $filter->values(),
-    "default" => $filter->default,
 ]])

@@ -22,7 +22,7 @@
                  style="display: none;"></div>
 
             <div x-show="dropdownOpen"
-                 class="absolute right-0 w-64 px-6 py-6 mt-2 bg-white rounded-md overflow-y-auto h-96 shadow-xl z-10"
+                 class="absolute right-0 w-64 px-6 py-6 mt-2 bg-white rounded-md overflow-y-auto h-64 shadow-xl z-10"
                  style="display: none;">
 
                 <form class="w-full max-w-sm" action="{{ $resource->route("index") }}" method="get">
@@ -31,7 +31,7 @@
                     @foreach($resource->filters() as $filter)
                         <div class="mb-4">
                             <div>
-                                {{ $resource->component($resource->getModel(), $filter, "filters") }}
+                                {{ $resource->component($filter, "filters", $resource->getModel()) }}
                             </div>
                         </div>
                     @endforeach

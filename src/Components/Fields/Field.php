@@ -6,6 +6,10 @@ namespace Leeto\Admin\Components\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\Admin\Components\ViewComponent;
 use Illuminate\Support\Str;
+use Leeto\Admin\Traits\Fields\LinkTrait;
+use Leeto\Admin\Traits\Fields\ShowWhenTrait;
+use Leeto\Admin\Traits\Fields\SimpleFieldTrait;
+use Leeto\Admin\Traits\Fields\XModelTrait;
 
 /**
  * Class Field
@@ -13,10 +17,22 @@ use Illuminate\Support\Str;
  */
 abstract class Field implements ViewComponent
 {
+    use SimpleFieldTrait, ShowWhenTrait, XModelTrait, LinkTrait;
+
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $originalName;
+
+    /**
+     * @var string
+     */
+    protected $parentRelation;
 
     /**
      * @var string
@@ -83,7 +99,6 @@ abstract class Field implements ViewComponent
      */
     public $form = true;
 
-
     protected $assets = [];
 
     public static function make(...$arguments)
@@ -99,7 +114,18 @@ abstract class Field implements ViewComponent
      */
     public function __construct($name, $relation = null, $relationViewField = null)
     {
+        $name = Str::of($name);
+
+        if($name->contains(".")) {
+            $nameData = $name->explode(".");
+            $this->parentRelation = $nameData->first();
+            $name = $nameData->last();
+        } else {
+            $this->parentRelation = "";
+        }
+
         $this->name = Str::lower($name);
+        $this->originalName = $this->name;
         $this->relation = Str::lower($relation);
         $this->relationViewField = Str::lower($relationViewField);
     }
@@ -119,9 +145,33 @@ abstract class Field implements ViewComponent
     /**
      * @return string
      */
+    public function originalName() : string
+    {
+        return $this->originalName;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setCustomName($name) : void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
     public function relation() : string
     {
         return $this->relation;
+    }
+
+    /**
+     * @return string
+     */
+    public function parentRelation() : string
+    {
+        return $this->parentRelation;
     }
 
     /**
