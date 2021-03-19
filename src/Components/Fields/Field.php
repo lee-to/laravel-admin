@@ -54,10 +54,7 @@ abstract class Field implements ViewComponent
      */
     public $view;
 
-    /**
-     * @var mixed
-     */
-    public $default;
+
 
     /**
      * @var string
@@ -202,15 +199,6 @@ abstract class Field implements ViewComponent
      */
     public function required() {
         $this->required = true;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function default($default) {
-        $this->default = $default;
 
         return $this;
     }

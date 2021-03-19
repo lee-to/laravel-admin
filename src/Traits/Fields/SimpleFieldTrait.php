@@ -14,6 +14,11 @@ trait SimpleFieldTrait
     protected $label = null;
 
     /**
+     * @var mixed
+     */
+    public $default;
+
+    /**
      * @return null|string
      */
     public function label() {
@@ -25,6 +30,15 @@ trait SimpleFieldTrait
      */
     public function defaultLabel($label) {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function default($default) {
+        $this->default = $default;
 
         return $this;
     }
