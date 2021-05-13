@@ -22,6 +22,7 @@ use Leeto\Admin\Components\ViewComponent;
 use Leeto\Admin\Traits\Resources\RouteTrait;
 use Leeto\Admin\Traits\Resources\QueryTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class Resource
@@ -331,6 +332,39 @@ abstract class Resource implements ResourceInterface
      */
     public function exportValue(Model $item, Field $field) {
         return $field instanceof SlideField || isset($item->{$field->name()}) ? $field->exportView($item) : '';
+    }
+
+    /**
+     * @return string
+     */
+    public function exportUrl() {
+        $exportQuery = Str::of("?_export=1");
+
+        if(request()->has("filters")) {
+            foreach (request()->query("filters") as $filterField => $filterQuery) {
+                if(is_array($filterQuery)) {
+                    foreach ($filterQuery as $filterInnerField => $filterValue) {
+                        if(is_numeric($filterInnerField)) {
+                            foreach ($filterValue as $filterIdsValue) {
+                                $exportQuery = $exportQuery->append("&filters[{$filterField}][]={$filterIdsValue}");
+                            }
+                        } else {
+                            $exportQuery = $exportQuery->append("&filters[{$filterInnerField}]={$filterValue}");
+                        }
+
+                    }
+                } else {
+                    $exportQuery = $exportQuery->append("&filters[{$filterField}]={$filterQuery}");
+                }
+
+            }
+        }
+
+        if(request()->has("search")) {
+            $exportQuery = $exportQuery->append("&search=" . request("search"));
+        }
+
+        return $this->route("index") . $exportQuery;
     }
 
     /**

@@ -51,7 +51,7 @@ trait ControllerTrait {
 
 
         $line = 2;
-        foreach ($this->resource->getModel()->all() as $item) {
+        foreach ($this->resource->all() as $item) {
             $letter = "A";
             foreach ($this->resource->exportFields() as $index => $field) {
                 $sheet->setCellValue($letter . $line, $this->resource->exportValue($item, $field));
