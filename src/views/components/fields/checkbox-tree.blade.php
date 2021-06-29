@@ -1,8 +1,8 @@
-<div x-data="checkboxTree()" x-init="() => { init() }">
+<div x-data="checkboxTree_{{ $attr["originalName"] }}()" x-init="() => { init() }">
     {!! $attr["html"] ?? "" !!}
 
     <script>
-        function checkboxTree() {
+        function checkboxTree_{{ $attr["originalName"] }}() {
             return {
                 checked: @json($value->pluck("id")),
                 ids: @json($attr["ids"]),

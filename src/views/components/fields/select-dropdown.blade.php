@@ -1,4 +1,4 @@
-<div class="relative" x-data="initDropDown()" x-init="$refs.dropdown.classList.remove('hidden')">
+<div class="relative" x-data="initDropDown_{{ $attr["originalName"] }}()" x-init="$refs.dropdown.classList.remove('hidden')">
     <span class="inline-block w-full rounded-md shadow-sm">
       <button @click="isOpen=!isOpen" type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
         <div class="flex items-center space-x-3">
@@ -44,7 +44,7 @@
     </div>
 
     <script>
-        function initDropDown() {
+        function initDropDown_{{ $attr["originalName"] }}() {
             return {
                 search: '',
                 isOpen: false,

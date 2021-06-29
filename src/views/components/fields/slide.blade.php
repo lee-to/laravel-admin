@@ -9,7 +9,7 @@
 </style>
 
 <div class="">
-    <div x-data="range()" x-init="mintrigger(); maxtrigger()" class="relative max-w-xl w-full">
+    <div x-data="range_{{ $attr["originalName"] }}()" x-init="mintrigger(); maxtrigger()" class="relative max-w-xl w-full">
         <div>
             <input type="range"
                    step="{{ $attr["step"] }}"
@@ -46,7 +46,7 @@
     </div>
 
     <script>
-        function range() {
+        function range_{{ $attr["originalName"] }}() {
             return {
                 minValue: parseInt('{{ $attr["minValue"] ?? $attr["min"] }}'),
                 maxValue: parseInt('{{ $attr["maxValue"] ?? $attr["max"] }}'),
