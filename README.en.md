@@ -44,6 +44,13 @@ php artisan admin:superuser
 php artisan admin:generate People --model="App\Models\People" --title="People"
 ```
 
+#### Troubleshooting
+
+- Images 404. Don't forget about the symbolic link to the storage folder and configure config/filesystems.php
+``` bash
+php artisan storage:link
+```
+
 #### Extensions
 
 - [Model localization](https://github.com/lee-to/laravel-model-localization)
