@@ -44,6 +44,13 @@ php artisan admin:superuser
 php artisan admin:generate People --model="App\Models\People" --title="People"
 ```
 
+#### Возможные проблемы
+
+- Изображения отдают 404? Не забудь про symbolic link на папку storege и настроить config/filesystems.php
+``` bash
+php artisan storage:link
+```
+
 #### Расширения
 
 - [Локализация моделей](https://github.com/lee-to/laravel-model-localization)
