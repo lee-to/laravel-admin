@@ -115,9 +115,8 @@ trait ControllerTrait {
             if($item->save()) {
                 foreach ($fields as $field) {
                     if($field instanceof RelationInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "BelongsToMany") {
-                        if($value = $field->save()) {
-                            $item->{$field->relation()}()->sync($value);
-                        }
+                        $value = $field->save();
+                        $item->{$field->relation()}()->sync(is_array($value) ? $value : []);
                     } elseif($field instanceof SubItemInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "HasMany") {
                         if($value = $field->save()) {
                             $item->{$field->relation()}()->delete();

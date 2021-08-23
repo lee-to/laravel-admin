@@ -2,6 +2,7 @@
 
 namespace Leeto\Admin\Traits\Resources;
 
+use Leeto\Admin\Components\Filters\BelongsToManyFilter;
 use Leeto\Admin\Components\Filters\DateFilter;
 use Leeto\Admin\Components\Filters\DateRangeFilter;
 use Leeto\Admin\Components\Filters\HasManyFilter;
@@ -88,6 +89,14 @@ trait QueryTrait {
                 if(!empty($value)) {
                     $model = $model->whereHas($filter->relation(), function ($query) use ($filter, $value) {
                         $query->whereIn("id", $value);
+                    });
+                }
+            } elseif($filter instanceof BelongsToManyFilter) {
+                if(!empty($value)) {
+                    $model = $model->whereHas($filter->relation(), function ($query) use ($model, $filter, $value) {
+                        $table = $model->{$filter->relation()}()->getRelated()->getTable();
+
+                        $query->whereIn("{$table}.id", $value);
                     });
                 }
             } else {
