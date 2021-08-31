@@ -15,7 +15,8 @@ class BelongsToMany extends Field implements RelationInterface
     public function indexView($item)
     {
         return collect($item->{$this->relation()})->map(function ($item) {
-            return str_replace("\"", "'", view("admin::components.partials.badge", ["color" => "purple", "value" => $item->{$this->relationViewField()}]));
+            return str_replace("\"", "'", view("admin::components.partials.badge",
+                ["color" => "purple", "value" => $item->{$this->relationViewField()}]));
         })->implode("");
     }
 
