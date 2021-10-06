@@ -2,6 +2,7 @@
     "step" => $filter->step,
     "min" => $filter->min,
     "max" => $filter->max,
+    "originalName" => $filter->name(),
     "minName" => "filters[{$filter->name()}][min]",
     "maxName" => "filters[{$filter->name()}][max]",
     "minValue" => request("filters.{$filter->name()}.min"),
