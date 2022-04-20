@@ -22,10 +22,11 @@ class TableFields
         $this->setTable($table);
     }
 
-    public function generate($only = []) {
+    public function generate($only = [])
+    {
         $fields = [];
         $tableData = DB::select("DESCRIBE {$this->getTable()}");
-        
+
         foreach ($tableData as $data) {
             if(!empty($only) && !in_array($data->Field, $only)) {
                 continue;
@@ -40,7 +41,7 @@ class TableFields
                     $classField->default($data->Default);
                 }
 
-                if($data->Null == "NO") {
+                if($data->Null == 'NO') {
                     $classField->required();
                 }
 
@@ -51,18 +52,19 @@ class TableFields
         return $fields;
     }
 
-    protected function typeFields($data) {
-        $type = Str::before($data->Type, "(");
+    protected function typeFields($data)
+    {
+        $type = Str::before($data->Type, '(');
 
-        if($data->Key == "PRI") {
+        if($data->Key == 'PRI') {
             return ID::class;
         }
 
         $types = [
-            Number::class => ["bigint", "int", "double"],
-            Text::class => ["varchar", "text"],
-            Editor::class => ["longtext"],
-            Date::class => ["timestamp", "date", "datetime"],
+            Number::class => ['bigint', 'int', 'double'],
+            Text::class => ['varchar', 'text'],
+            Editor::class => ['longtext'],
+            Date::class => ['timestamp', 'date', 'datetime'],
         ];
 
         return Arr::first(array_keys(Arr::where($types, function ($item) use($type) {
@@ -85,6 +87,4 @@ class TableFields
     {
         $this->table = $table;
     }
-
-
 }

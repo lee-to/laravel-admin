@@ -5,9 +5,9 @@ namespace Leeto\Admin\Components\Fields;
 
 class Number extends Field
 {
-    public $view = "text";
+    public $view = 'text';
 
-    public $type = "number";
+    public $type = 'number';
 
     public $stars = false;
 
@@ -15,19 +15,22 @@ class Number extends Field
 
     public $max = 1000;
 
-    public function stars() {
+    public function stars()
+    {
         $this->stars = true;
 
         return $this;
     }
 
-    public function min($min) {
+    public function min($min)
+    {
         $this->min = $min;
 
         return $this;
     }
 
-    public function max($max) {
+    public function max($max)
+    {
         $this->max = $max;
 
         return $this;
@@ -36,7 +39,9 @@ class Number extends Field
     public function indexView($item)
     {
         if($this->stars) {
-            return view("admin::components.listing.partials.stars", ["value" => $item->{$this->name()}]);
+            return view('admin::components.listing.partials.stars', [
+                'value' => $item->{$this->name()}
+            ]);
         } else {
             return parent::indexView($item);
         }

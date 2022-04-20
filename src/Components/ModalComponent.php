@@ -18,8 +18,6 @@ class ModalComponent extends Component
      */
     public function render()
     {
-        return view('admin::components.modal', [
-
-        ]);
+        return view('admin::components.modal', []);
     }
 }

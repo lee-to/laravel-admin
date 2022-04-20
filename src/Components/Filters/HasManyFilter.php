@@ -10,5 +10,5 @@ class HasManyFilter extends Filter implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "multi-select";
+    public $view = 'multi-select';
 }

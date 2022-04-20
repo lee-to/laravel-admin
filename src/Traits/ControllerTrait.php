@@ -20,27 +20,34 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  * Trait ControllerTrait
  * @package Leeto\Admin\Traits
  */
-trait ControllerTrait {
+trait ControllerTrait
+{
     /* @var \Leeto\Admin\Resources\Resource */
     protected $resource;
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
-        if(request()->has("_export")) {
+    public function index()
+    {
+        $this->hasAccess('list');
+
+        if(request()->has('_export')) {
             return $this->_export();
         }
         return view($this->resource->baseIndexView, [
-            "resource" => $this->resource,
+            'resource' => $this->resource,
         ]);
     }
 
-    protected function _export() {
+    protected function _export()
+    {
+        $this->hasAccess('list');
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $letter = "A";
+        $letter = 'A';
         foreach ($this->resource->exportFields() as $index => $field) {
             $sheet->setCellValue($letter.'1', $this->resource->label($field));
 
@@ -52,7 +59,7 @@ trait ControllerTrait {
 
         $line = 2;
         foreach ($this->resource->all() as $item) {
-            $letter = "A";
+            $letter = 'A';
             foreach ($this->resource->exportFields() as $index => $field) {
                 $sheet->setCellValue($letter . $line, $this->resource->exportValue($item, $field));
                 $letter++;
@@ -75,10 +82,13 @@ trait ControllerTrait {
      * @param null $item
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function _view_edit($item = null) {
+    protected function _view_edit($item = null)
+    {
+        $this->hasAccess('edit');
+
         return view($this->resource->baseEditView, [
-            "resource" =>  $this->resource,
-            "item" => $item ? $item : $this->resource->getModel(),
+            'resource' =>  $this->resource,
+            'item' => $item ? $item : $this->resource->getModel(),
         ]);
     }
 
@@ -88,7 +98,8 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function _save(Request $request, Model $item) {
+    protected function _save(Request $request, Model $item)
+    {
         if($request->isMethod('post') || $request->isMethod('put')) {
             Validator::make($request->all(), $this->resource->rules($item), $this->resource->messages(), $this->resource->attributes())->validate();
 
@@ -116,14 +127,30 @@ trait ControllerTrait {
                 foreach ($fields as $field) {
                     if($field instanceof RelationInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "BelongsToMany") {
                         $value = $field->save();
-                        $item->{$field->relation()}()->sync(is_array($value) ? $value : []);
+                        $syncData = is_array($value) ? $value : [];
+
+                        if(isset($field->pivotField)) {
+                            $syncDataPivot = [];
+
+                            foreach ($syncData as $syncIndex => $syncValue) {
+                                $syncDataPivot[$syncValue] = [
+                                    $field->pivotField => $request->get(
+                                            $field->originalName() . '_' . $field->pivotField
+                                        )[$syncIndex] ?? ''
+                                ];
+                            }
+
+                            $syncData = $syncDataPivot;
+                        }
+
+                        $item->{$field->relation()}()->sync($syncData);
                     } elseif($field instanceof SubItemInterface && (new \ReflectionClass($item->{$field->relation()}()))->getShortName() == "HasMany") {
                         if($value = $field->save()) {
                             $item->{$field->relation()}()->delete();
 
                             $value = collect($value)->map(function ($v) use($field, $item) {
                                 $relatedClass = $item->{$field->relation()}()->getRelated();
-                                
+
                                 $newItem = new $relatedClass($v);
                                 $newItem->{$item->{$field->relation()}()->getForeignKeyName()} = $item->id;
                                 $newItem->save();
@@ -161,7 +188,7 @@ trait ControllerTrait {
                 $item->save();
             }
 
-            return redirect($this->resource->route("index"))->with("alert", __("admin.saved"));
+            return redirect($this->resource->route('index'))->with('alert', __('admin.saved'));
         }
 
         return $this->_view_edit($item);
@@ -170,9 +197,12 @@ trait ControllerTrait {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() {
-        if(!in_array("add", $this->resource->actions)) {
-            return redirect($this->resource->route("index"));
+    public function create()
+    {
+        $this->hasAccess('add');
+
+        if(!in_array('add', $this->resource->actions)) {
+            return redirect($this->resource->route('index'));
         }
 
         return $this->_view_edit();
@@ -182,20 +212,24 @@ trait ControllerTrait {
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id) {
-        if(!in_array("edit", $this->resource->actions)) {
-            return redirect($this->resource->route("index"));
+    public function edit($id)
+    {
+        $this->hasAccess('edit');
+
+        if(!in_array('edit', $this->resource->actions)) {
+            return redirect($this->resource->route('index'));
         }
 
-        $item = $this->resource->getModel()->where(["id" => $id])->firstOrFail();
+        $item = $this->resource->getModel()->where(['id' => $id])->firstOrFail();
 
         $this->resource->setItem($item);
 
         return $this->_view_edit($item);
     }
 
-    public function show($id) {
-        return redirect($this->resource->route("index"));
+    public function show($id)
+    {
+        return redirect($this->resource->route('index'));
     }
 
     /**
@@ -204,12 +238,15 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update($id, Request $request) {
-        if(!in_array("edit", $this->resource->actions)) {
-            return redirect($this->resource->route("index"));
+    public function update($id, Request $request)
+    {
+        $this->hasAccess('edit');
+
+        if(!in_array('edit', $this->resource->actions)) {
+            return redirect($this->resource->route('index'));
         }
 
-        $item = $this->resource->getModel()->where(["id" => $id])->firstOrFail();
+        $item = $this->resource->getModel()->where(['id' => $id])->firstOrFail();
 
         return $this->_save($request, $item);
     }
@@ -219,9 +256,12 @@ trait ControllerTrait {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request) {
-        if(!in_array("edit", $this->resource->actions) && !in_array("add", $this->resource->actions)) {
-            return redirect($this->resource->route("index"));
+    public function store(Request $request)
+    {
+        $this->hasAccess('add');
+
+        if(!in_array('edit', $this->resource->actions) && !in_array("add", $this->resource->actions)) {
+            return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel();
@@ -233,17 +273,30 @@ trait ControllerTrait {
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id) {
-        if(!in_array("delete", $this->resource->actions)) {
-            return redirect($this->resource->route("index"));
+    public function destroy($id)
+    {
+        $this->hasAccess('delete');
+
+        if(!in_array('delete', $this->resource->actions)) {
+            return redirect($this->resource->route('index'));
         }
 
-        if(request()->has("ids")) {
-            $this->resource->getModel()->whereIn("id", explode(";", request("ids")))->delete();
+        if(request()->has('ids')) {
+            $this->resource->getModel()->whereIn('id', explode(';', request('ids')))->delete();
         } else {
             $this->resource->getModel()->destroy($id);
         }
 
-        return redirect($this->resource->route("index"))->with("alert", __("admin.deleted"));
+        return redirect($this->resource->route('index'))
+            ->with('alert', __('admin.deleted'));
+    }
+
+    private function hasAccess($type)
+    {
+        $canArray = $this->resource->can();
+
+        if(!isset($canArray[$type]) || !in_array(auth('admin')->user()->adminRole->id, $canArray[$type])) {
+            abort(403);
+        }
     }
 }

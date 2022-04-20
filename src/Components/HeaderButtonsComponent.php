@@ -13,11 +13,11 @@ class HeaderButtonsComponent extends Component
      */
     public function render()
     {
-        $path = app_path("Admin/header_buttons.php");
+        $path = app_path('Admin/header_buttons.php');
         $data = file_exists($path) ? include $path : [];
 
         return view('admin::components.header-buttons', [
-            "data" => $data,
+            'data' => $data,
         ]);
     }
 }

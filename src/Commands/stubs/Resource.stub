@@ -3,29 +3,40 @@
 namespace App\Admin\Resources;
 
 use Leeto\Admin\Components\Fields\ID;
+use Leeto\Admin\Models\AdminRole;
 use Leeto\Admin\Resources\Resource;
 
 class DummyResource extends Resource
 {
 	public static $model = 'DummyModel';
 
-	public $title = "DummyTitle";
+	public $title = 'DummyTitle';
+
+    public function can(): array
+    {
+        return [
+            'list' => [AdminRole::$ADMIN_ROLE_ID],
+            'add' => [AdminRole::$ADMIN_ROLE_ID],
+            'edit' => [AdminRole::$ADMIN_ROLE_ID],
+            'delete' => [AdminRole::$ADMIN_ROLE_ID],
+        ];
+    }
 
 	public function fields()
 	{
 		return [
-            ID::make("id")->sortable(),
+            ID::make('id')->sortable(),
         ];
 	}
 
-	public function rules($item) {
-	    return [
-	    ];
+	public function rules($item)
+	{
+	    return [];
     }
 
     public function search()
     {
-        return ["id"];
+        return ['id'];
     }
 
     public function filters()
@@ -33,9 +44,10 @@ class DummyResource extends Resource
         return [];
     }
 
-	public function attributes() {
+	public function attributes()
+	{
 	    return [
-            "id" => "ID",
+            'id' => "ID",
         ];
     }
 }

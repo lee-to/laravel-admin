@@ -9,5 +9,5 @@ class SelectFilter extends Filter
 {
     use SelectTrait;
 
-    public $view = "select";
+    public $view = 'select';
 }

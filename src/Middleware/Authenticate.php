@@ -11,7 +11,7 @@ class Authenticate
     {
         $redirectTo = config('admin.auth.redirect_to', 'admin/login');
 
-        if (Auth::guard("admin")->guest() && !$this->except($request)) {
+        if (Auth::guard('admin')->guest() && !$this->except($request)) {
             return redirect()->guest($redirectTo);
         }
 

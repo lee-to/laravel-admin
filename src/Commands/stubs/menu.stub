@@ -1,5 +1,6 @@
 <?php
 
 return [
-    ["class" =>\Leeto\Admin\Controllers\AdminUserController::class, "title" => "Администраторы"],
+    ['class' =>\Leeto\Admin\Controllers\AdminUserController::class, 'title' => "Администраторы"],
+    ['class' =>\Leeto\Admin\Controllers\AdminRoleController::class, 'title' => "Роли"],
 ];

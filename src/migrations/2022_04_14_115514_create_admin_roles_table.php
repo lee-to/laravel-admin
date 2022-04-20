@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateAdminTables extends Migration
      */
     public function up()
     {
-        Schema::create('admin_users', function (Blueprint $table) {
+        Schema::create('admin_roles', function (Blueprint $table) {
             $table->id();
-            $table->string('email', 190)->unique();
-            $table->string('password', 60);
             $table->string('name');
-            $table->string('avatar')->nullable();
-            $table->string('remember_token', 100)->nullable();
             $table->timestamps();
         });
+
+        \Leeto\Admin\Models\AdminRole::query()
+            ->create([
+                'id' => \Leeto\Admin\Models\AdminRole::$ADMIN_ROLE_ID,
+                'name' => 'Admin',
+            ]);
     }
 
     /**
@@ -31,6 +33,6 @@ class CreateAdminTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_users');
+        Schema::dropIfExists('admin_roles');
     }
-}
+};

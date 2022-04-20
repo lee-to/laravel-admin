@@ -8,11 +8,13 @@ class Extension
 {
     public $tabs = [];
 
-    public function formFields() {
+    public function formFields()
+    {
         return [];
     }
 
-    public function editTabs(Model $item) {
-        return view("admin::components.partials.tabs", ["tabs" => $this->tabs]);
+    public function editTabs(Model $item)
+    {
+        return view('admin::components.partials.tabs', ['tabs' => $this->tabs]);
     }
 }

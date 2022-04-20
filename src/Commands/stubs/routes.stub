@@ -4,16 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 use Leeto\Admin\Controllers\IndexController;
 use Leeto\Admin\Controllers\AdminUserController;
+use Leeto\Admin\Controllers\AdminRoleController;
 
-Route::prefix('admin')->name("admin.")->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
 
-    Route::middleware(config("admin.route.middleware"))->group(function () {
-        Route::post("/attachments", [IndexController::class, 'attachments'])->name("attachments");
-        Route::get("/", [IndexController::class, 'index'])->name("index");
-        Route::any("/login", [IndexController::class, 'login'])->name("login");
-        Route::get("/logout", [IndexController::class, 'logout'])->name("logout");
-        Route::resource("adminusers", AdminUserController::class);
+    Route::middleware(config('admin.route.middleware'))->group(function () {
+        Route::post('/attachments', [IndexController::class, 'attachments'])->name('attachments');
+        Route::get('/', [IndexController::class, 'index'])->name('index');
+        Route::any('/login', [IndexController::class, 'login'])->name('login');
+        Route::get('/logout', [IndexController::class, 'logout'])->name('logout');
 
-        //
+        // System resources
+        Route::resource('adminusers', AdminUserController::class);
+        Route::resource('adminroles', AdminRoleController::class);
+
+        // Here your resource
     });
 });

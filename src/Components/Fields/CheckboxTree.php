@@ -9,19 +9,20 @@ use Leeto\Admin\Components\RelationInterface;
 
 class CheckboxTree extends Field implements RelationInterface
 {
-    public $view = "checkbox-tree";
+    public $view = 'checkbox-tree';
 
     public $html;
 
     public $plain;
 
-    public $parentColumn = "parent_id";
+    public $parentColumn = 'parent_id';
 
     public $ids = [];
 
-    public $liClass = "mb-3 bg-blue-200 py-4 px-4 rounded-md";
+    public $liClass = 'mb-3 bg-blue-200 py-4 px-4 rounded-md';
 
-    public function build($parentColumn, $data) {
+    public function build($parentColumn, $data)
+    {
         $this->parentColumn = $parentColumn;
 
         $this->htmlView($data, true);
@@ -47,7 +48,8 @@ class CheckboxTree extends Field implements RelationInterface
         return $this->plain;
     }
 
-    protected function formattedData($data) {
+    protected function formattedData($data)
+    {
         $formatted = [];
 
         foreach ($data as $item) {
@@ -59,9 +61,10 @@ class CheckboxTree extends Field implements RelationInterface
         return $formatted;
     }
 
-    protected function htmlView($data, $editable = true) {
-        $this->html = "";
-        $this->plain = "";
+    protected function htmlView($data, $editable = true)
+    {
+        $this->html = '';
+        $this->plain = '';
         $this->tree($this->formattedData($data), $editable);
         $this->html = Str::of($this->html)->prepend("<ul>")->append("</ul>");
     }
@@ -78,13 +81,20 @@ class CheckboxTree extends Field implements RelationInterface
                 $element = $item->{$this->relationViewField()};
 
                 if($editable) {
-                    $element = view("admin::components.fields.checkbox", ["label" => $item->{$this->relationViewField()}, "value" => $item->id, "attr" => ["name" => $this->name() . "[]"]]);
+                    $element = view(
+                        'admin::components.fields.checkbox',
+                        [
+                            'label' => $item->{$this->relationViewField()},
+                            'value' => $item->id,
+                            'attr' => ['name' => $this->name() . '[]']
+                        ]
+                    );
                 } else {
-                    $this->plain .= str_repeat("-", $offset);
+                    $this->plain .= str_repeat('-', $offset);
                     $this->plain .= $item->{$this->relationViewField()} . "\n";
                 }
 
-                $this->html .= Str::of($element)->prepend("<li x-ref='item_{$item->id}' style='margin-left: {$margin}px' class='{$this->liClass}'>")->append("</li>");
+                $this->html .= Str::of($element)->prepend("<li x-ref='item_{$item->id}' style='margin-left: {$margin}px' class='{$this->liClass}'>")->append('</li>');
 
                 $this->tree($data, $editable, $item->id, $offset + 1);
             }

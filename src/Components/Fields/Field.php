@@ -113,12 +113,12 @@ abstract class Field implements ViewComponent
     {
         $name = Str::of($name);
 
-        if($name->contains(".")) {
-            $nameData = $name->explode(".");
+        if($name->contains('.')) {
+            $nameData = $name->explode('.');
             $this->parentRelation = $nameData->first();
             $name = $nameData->last();
         } else {
-            $this->parentRelation = "";
+            $this->parentRelation = '';
         }
 
         $this->name = Str::lower($name);
@@ -127,7 +127,8 @@ abstract class Field implements ViewComponent
         $this->relationViewField = Str::lower($relationViewField);
     }
 
-    public function attributes() {
+    public function attributes()
+    {
         return get_object_vars($this);
     }
 
@@ -197,7 +198,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function required() {
+    public function required()
+    {
         $this->required = true;
 
         return $this;
@@ -206,7 +208,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function hint($hint) {
+    public function hint($hint)
+    {
         $this->hint = $hint;
 
         return $this;
@@ -215,7 +218,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function removeable($removeable) {
+    public function removeable($removeable)
+    {
         $this->removeable = $removeable;
 
         return $this;
@@ -224,7 +228,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function disabled() {
+    public function disabled()
+    {
         $this->disabled = true;
 
         return $this;
@@ -233,7 +238,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function export() {
+    public function export()
+    {
         $this->export = true;
 
         return $this;
@@ -242,7 +248,8 @@ abstract class Field implements ViewComponent
     /**
      * @return $this
      */
-    public function sortable() {
+    public function sortable()
+    {
         $this->sortable = true;
 
         return $this;
@@ -252,7 +259,8 @@ abstract class Field implements ViewComponent
      * @param bool $index
      * @return $this
      */
-    public function index($index = true) {
+    public function index($index = true)
+    {
         $this->index = $index;
 
         return $this;
@@ -262,7 +270,8 @@ abstract class Field implements ViewComponent
      * @param bool $form
      * @return $this
      */
-    public function form($form = true) {
+    public function form($form = true)
+    {
         $this->form = $form;
 
         return $this;
@@ -271,7 +280,8 @@ abstract class Field implements ViewComponent
     /**
      * @return array|\Illuminate\Http\Request|string
      */
-    public function save() {
+    public function save()
+    {
         return request($this->name()) ?? false;
     }
 
@@ -283,11 +293,13 @@ abstract class Field implements ViewComponent
         return $this->assets;
     }
 
-    public function indexView(Model $item) {
+    public function indexView(Model $item)
+    {
         return $item->{$this->name()};
     }
 
-    public function exportView(Model $item) {
+    public function exportView(Model $item)
+    {
         return strip_tags($item->{$this->name()});
     }
 }

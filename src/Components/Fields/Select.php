@@ -10,7 +10,7 @@ class Select extends Field
 {
     use SelectTrait;
 
-    public $view = "select";
+    public $view = 'select';
 
     public function indexView(Model $item)
     {

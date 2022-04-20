@@ -81,11 +81,11 @@ class FieldComponent extends Component
         $this->resource = $resource;
         $this->component = $component;
         $this->item = $item;
-        $this->value = $item instanceof Model && $component->type() != "password" ? $item->{$component->originalName(
+        $this->value = $item instanceof Model && $component->type() != 'password' ? $item->{$component->originalName(
         )} : old($component->originalName());
         $this->emptyValue = $this->value;
 
-        if (is_null($this->value) || $this->value == "") {
+        if (is_null($this->value) || $this->value == '') {
             $this->value = $component->default;
         }
 
@@ -105,19 +105,19 @@ class FieldComponent extends Component
         $this->attr = $component->attributes();
 
         if($component instanceof HasMany || $component instanceof BelongsToMany) {
-            if(!Str::of($this->attr["name"])->endsWith("[]")) {
-                $this->attr["name"] = Str::of($this->attr["name"])->append("[]");
+            if(!Str::of($this->attr['name'])->endsWith('[]')) {
+                $this->attr['name'] = Str::of($this->attr['name'])->append('[]');
             }
         }
 
         if ($component->xModel) {
             $xModelInputName = "item.input_name_{$component->originalName()}";
 
-            $this->attr["_attr"] = "x-model=\"{$component->xModelField()}\" :name='{$xModelInputName}'";
+            $this->attr['_attr'] = "x-model=\"{$component->xModelField()}\" :name='{$xModelInputName}'";
         }
 
         if ($resource->isWhenConditionField($component->name())) {
-            $this->attr["_attr"] = "x-model=\"{$component->name()}\"";
+            $this->attr['_attr'] = "x-model=\"{$component->name()}\"";
         }
 
         if ($component instanceof RelationInterface) {

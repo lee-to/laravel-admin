@@ -10,19 +10,28 @@ class BelongsToMany extends Field implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "multi-checkbox";
+    public $view = 'multi-checkbox';
+
+    public $pivotField = null;
+
+    public function withPivot($field)
+    {
+        $this->pivotField = $field;
+
+        return $this;
+    }
 
     public function indexView($item)
     {
         return collect($item->{$this->relation()})->map(function ($item) {
-            return str_replace("\"", "'", view("admin::components.partials.badge",
-                ["color" => "purple", "value" => $item->{$this->relationViewField()}]));
-        })->implode("");
+            return str_replace("\"", "'", view('admin::components.partials.badge',
+                ['color' => 'purple', 'value' => $item->{$this->relationViewField()}]));
+        })->implode('');
     }
 
     public function exportView($item) {
         return collect($item->{$this->relation()})->map(function ($item) {
             return $item->{$this->relationViewField()};
-        })->implode(";");
+        })->implode(';');
     }
 }

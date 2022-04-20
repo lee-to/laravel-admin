@@ -19,6 +19,7 @@ use Leeto\Admin\Components\Filters\HasManyFilter;
 use Leeto\Admin\Components\Filters\HasOneFilter;
 use Leeto\Admin\Components\RelationInterface;
 use Leeto\Admin\Components\ViewComponent;
+use Leeto\Admin\Traits\Resources\PermissionTrait;
 use Leeto\Admin\Traits\Resources\RouteTrait;
 use Leeto\Admin\Traits\Resources\QueryTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,7 @@ use Illuminate\Support\Str;
  */
 abstract class Resource implements ResourceInterface
 {
-    use QueryTrait, RouteTrait;
+    use QueryTrait, RouteTrait, PermissionTrait;
 
     /**
      * @var
@@ -50,7 +51,13 @@ abstract class Resource implements ResourceInterface
     /**
      * @var
      */
-    public $actions = ["add", "edit", "delete"];
+    public $actions = ['add', 'edit', 'delete'];
+
+
+    /**
+     * @var
+     */
+    public $with = [];
 
     /**
      * @var null
@@ -60,7 +67,7 @@ abstract class Resource implements ResourceInterface
     /**
      * @var string
      */
-    public $defaultSortType = "DESC";
+    public $defaultSortType = 'DESC';
 
     /**
      * @var int
@@ -68,9 +75,9 @@ abstract class Resource implements ResourceInterface
     public $itemsPerPage = 5;
 
 
-    public $baseIndexView = "admin::base.index";
+    public $baseIndexView = 'admin::base.index';
 
-    public $baseEditView = "admin::base.edit";
+    public $baseEditView = 'admin::base.edit';
 
     public $item;
 
@@ -146,7 +153,7 @@ abstract class Resource implements ResourceInterface
                     foreach ($field->getFields() as $subField) {
                         if($subField instanceof SubItemInterface) {
                             foreach ($this->getItem()->{$field->relation()} as $data) {
-                                $this->subItemData[$field->relation() . "." . $subField->relation()][$data->id] = $data->{$subField->relation()};
+                                $this->subItemData[$field->relation() . '.' . $subField->relation()][$data->id] = $data->{$subField->relation()};
                             }
                         }
                     }
@@ -156,9 +163,10 @@ abstract class Resource implements ResourceInterface
     }
 
     /**
-    * @return array
-    */
-    public function getFields() {
+     * @return array
+     */
+    public function getFields()
+    {
         $fields = [];
 
         foreach ($this->fields() as $item) {
@@ -179,20 +187,22 @@ abstract class Resource implements ResourceInterface
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function formTabs() {
+    public function formTabs()
+    {
         return collect($this->fields())->filter(function ($item) {
-           return $item instanceof Tab;
+            return $item instanceof Tab;
         });
     }
 
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function formFields() {
+    public function formFields()
+    {
         $fields = collect();
 
-        if(app("AdminExtensions")) {
-            foreach (app("AdminExtensions") as $extension) {
+        if(app('AdminExtensions')) {
+            foreach (app('AdminExtensions') as $extension) {
                 $extensionFields = collect($extension->formFields())->filter(function ($value) {
                     return $value->form;
                 });
@@ -211,7 +221,8 @@ abstract class Resource implements ResourceInterface
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function whenFields() {
+    public function whenFields()
+    {
         return collect($this->getFields())->filter(function ($value) {
             return $value->showWhenState;
         });
@@ -220,7 +231,8 @@ abstract class Resource implements ResourceInterface
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function whenFieldNames() {
+    public function whenFieldNames()
+    {
         $names = [];
 
         foreach ($this->whenFields() as $field) {
@@ -230,14 +242,16 @@ abstract class Resource implements ResourceInterface
         return collect($names);
     }
 
-    public function isWhenConditionField($name) {
+    public function isWhenConditionField($name)
+    {
         return $this->whenFieldNames()->has($name);
     }
 
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function indexFields() {
+    public function indexFields()
+    {
         return collect($this->getFields())->filter(function ($value) {
             return $value->index;
         });
@@ -246,7 +260,8 @@ abstract class Resource implements ResourceInterface
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function exportFields() {
+    public function exportFields()
+    {
         return collect($this->getFields())->filter(function ($value) {
             return $value->export;
         });
@@ -256,7 +271,8 @@ abstract class Resource implements ResourceInterface
      * @param $type
      * @return array|mixed
      */
-    public function getAssets($type) {
+    public function getAssets($type)
+    {
         $assets = [];
 
         foreach ($this->getFields() as $field) {
@@ -271,14 +287,16 @@ abstract class Resource implements ResourceInterface
     /**
      * @return string
      */
-    public function getModelName() : string {
+    public function getModelName(): string
+    {
         return static::$model;
     }
 
     /**
      * @return Model
      */
-    public function getModel() : Model {
+    public function getModel(): Model
+    {
         $model = static::$model;
 
         return new $model;
@@ -288,7 +306,8 @@ abstract class Resource implements ResourceInterface
      * @param $name
      * @return \Illuminate\Support\Collection
      */
-    public function getFilter($name) {
+    public function getFilter($name)
+    {
 
         return collect($this->filters())->filter(function ($value) use($name) {
             /* @var \Leeto\Admin\Components\Filters\Filter $value */
@@ -300,7 +319,8 @@ abstract class Resource implements ResourceInterface
      * @param $name
      * @return \Illuminate\Support\Collection
      */
-    public function getField($name) {
+    public function getField($name)
+    {
 
         return collect($this->getFields())->filter(function ($value) use($name) {
             /* @var \Leeto\Admin\Components\Fields\Field $value */
@@ -312,7 +332,8 @@ abstract class Resource implements ResourceInterface
      * @param ViewComponent $field
      * @return string
      */
-    public function label(ViewComponent $field) {
+    public function label(ViewComponent $field)
+    {
         return $field->label() ? $field->label() : $this->attributes()[$field->name()] ?? $field->name();
     }
 
@@ -321,7 +342,8 @@ abstract class Resource implements ResourceInterface
      * @param Field $field
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed|string
      */
-    public function value(Model $item, Field $field) {
+    public function value(Model $item, Field $field)
+    {
         return $field instanceof SlideField || isset($item->{$field->name()}) ? $field->indexView($item) : '';
     }
 
@@ -330,24 +352,32 @@ abstract class Resource implements ResourceInterface
      * @param Field $field
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed|string
      */
-    public function exportValue(Model $item, Field $field) {
+    public function exportValue(Model $item, Field $field)
+    {
         return $field instanceof SlideField || isset($item->{$field->name()}) ? $field->exportView($item) : '';
     }
 
     /**
      * @return string
      */
-    public function exportUrl() {
-        $exportQuery = Str::of("?_export=1");
+    public function exportUrl()
+    {
+        $exportQuery = Str::of('?_export=1');
 
-        if(request()->has("filters")) {
-            foreach (request()->query("filters") as $filterField => $filterQuery) {
+        if(request()->has('filters')) {
+            foreach (request()->query('filters') as $filterField => $filterQuery) {
                 if(is_array($filterQuery)) {
                     foreach ($filterQuery as $filterInnerField => $filterValue) {
                         if(is_numeric($filterInnerField)) {
-                            foreach ($filterValue as $filterIdsValue) {
-                                $exportQuery = $exportQuery->append("&filters[{$filterField}][]={$filterIdsValue}");
+
+                            if(is_array($filterValue)) {
+                                foreach ($filterValue as $filterIdsValue) {
+
+                                }
+                            } else {
+                                $exportQuery = $exportQuery->append("&filters[{$filterField}][]={$filterValue}");
                             }
+
                         } else {
                             $exportQuery = $exportQuery->append("&filters[{$filterInnerField}]={$filterValue}");
                         }
@@ -360,11 +390,11 @@ abstract class Resource implements ResourceInterface
             }
         }
 
-        if(request()->has("search")) {
-            $exportQuery = $exportQuery->append("&search=" . request("search"));
+        if(request()->has('search')) {
+            $exportQuery = $exportQuery->append('&search=' . request('search'));
         }
 
-        return $this->route("index") . $exportQuery;
+        return $this->route('index') . $exportQuery;
     }
 
     /**
@@ -374,19 +404,29 @@ abstract class Resource implements ResourceInterface
      * @param boolean $onlyField
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function component(ViewComponent $component, $type, Model $item, $onlyField = false) {
-        if ($component instanceof RelationInterface && method_exists($component, "options")) {
-            $component->options(collect($item->{$component->relation()}()->getRelated()->all())->pluck($component->relationViewField(), "id")->toArray());
+    public function component(ViewComponent $component, $type, Model $item, $onlyField = false)
+    {
+        if ($component instanceof RelationInterface && method_exists($component, 'options')) {
+            $component->options(collect($item->{$component->relation()}()->getRelated()->all())->pluck($component->relationViewField(), 'id')->toArray());
         }
 
-        return view("admin::components.{$type}.component", ["resource" => $this, "item" => $item, "component" => $component, "onlyField" => $onlyField]);
+        return view(
+            "admin::components.{$type}.component",
+            [
+                'resource' => $this,
+                'item' => $item,
+                'component' => $component,
+                'onlyField' => $onlyField
+            ]
+        );
     }
 
-    public function extensions($name, Model $item) {
-        $views = "";
+    public function extensions($name, Model $item)
+    {
+        $views = '';
 
-        if(app("AdminExtensions")) {
-            foreach (app("AdminExtensions") as $extension) {
+        if(app('AdminExtensions')) {
+            foreach (app('AdminExtensions') as $extension) {
                 if(method_exists($extension, $name)) {
                     $views .= $extension->{$name}($item);
                 }

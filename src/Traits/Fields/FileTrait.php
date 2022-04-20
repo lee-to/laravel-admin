@@ -11,25 +11,30 @@ trait FileTrait
 
     protected $added = [];
 
-    protected function setAdded($added) {
+    protected function setAdded($added)
+    {
         $this->added = $added;
     }
 
-    protected function getAdded() {
+    protected function getAdded()
+    {
         return $this->added;
     }
 
-    public function multiple() {
+    public function multiple()
+    {
         $this->multiple = true;
 
         return $this;
     }
 
-    public function src($path) {
-        return $path ? Storage::url($path) : "";
+    public function src($path)
+    {
+        return $path ? Storage::url($path) : '';
     }
 
-    public function sync($values, $detach = false) {
+    public function sync($values, $detach = false)
+    {
         if($this->multiple) {
             if(request()->has("sync_{$this->name()}")) {
                 $hidden = collect(request("hidden_{$this->name()}") ?? []);
@@ -49,7 +54,8 @@ trait FileTrait
         return $values;
     }
 
-    public function save() {
+    public function save()
+    {
         $result = [];
 
         if(!request()->hasFile($this->name())) {
@@ -61,8 +67,8 @@ trait FileTrait
         foreach ($files as $file) {
             $mime = $file->getMimeType();
 
-            if(empty($this->allowedFileExtension) || array_search(Str::after($mime, "/"), $this->allowedFileExtension)) {
-                $result[] = $file->store($this->dir, "public");
+            if(empty($this->allowedFileExtension) || array_search(Str::after($mime, '/'), $this->allowedFileExtension)) {
+                $result[] = $file->store($this->dir, 'public');
             }
         }
 

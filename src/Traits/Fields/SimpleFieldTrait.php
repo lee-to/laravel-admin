@@ -21,14 +21,16 @@ trait SimpleFieldTrait
     /**
      * @return null|string
      */
-    public function label() {
+    public function label()
+    {
         return $this->label;
     }
 
     /**
      * @return $this
      */
-    public function defaultLabel($label) {
+    public function defaultLabel($label)
+    {
         $this->label = $label;
 
         return $this;
@@ -37,7 +39,8 @@ trait SimpleFieldTrait
     /**
      * @return $this
      */
-    public function default($default) {
+    public function default($default)
+    {
         $this->default = $default;
 
         return $this;

@@ -16,20 +16,21 @@ class Menu
         $this->config = $config;
     }
 
-    public function get() {
+    public function get()
+    {
         $menuData = [];
 
-        $this->menu = $this->config ?? include app_path("Admin/menu.php");
+        $this->menu = $this->config ?? include app_path('Admin/menu.php');
 
         if(is_array($this->menu)) {
             foreach ($this->menu as $data) {
-                $dropdown = isset($data["dropdown"]) ? collect($data["dropdown"]) : collect();
+                $dropdown = isset($data['dropdown']) ? collect($data['dropdown']) : collect();
 
                 $dropdown = $dropdown->map(function ($item) {
                     return [
-                        "url" => action([$item["class"], $item["action"] ?? 'index']),
-                        "data" => $item,
-                        "current" => $this->current($item["class"], $item["action"] ?? null)
+                        'url' => action([$item['class'], $item['action'] ?? 'index']),
+                        'data' => $item,
+                        'current' => $this->current($item['class'], $item['action'] ?? null)
                     ];
                 });
 

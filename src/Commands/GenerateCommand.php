@@ -42,28 +42,29 @@ class GenerateCommand extends Command
 
     public function createResource()
     {
-        $name = ucfirst($this->argument("name"));
+        $name = ucfirst($this->argument('name'));
+
         if(!$name) {
-            $name = ucfirst($this->ask("Controller name?"));
+            $name = ucfirst($this->ask('Controller name?'));
         }
 
-        $model = $this->option("model");
-        $title = $this->option("title") ?? $name;
+        $model = $this->option('model');
+        $title = $this->option('title') ?? $name;
 
         if(!$model) {
-            $this->error("Model is required");
+            $this->error('Model is required');
 
             return false;
         }
 
         $resource = $this->directory."/Resources/{$name}Resource.php";
         $contents = $this->getStub('Resource');
-        $contents = str_replace("DummyModel", $model, $contents);
-        $contents = str_replace("DummyTitle", $title, $contents);
+        $contents = str_replace('DummyModel', $model, $contents);
+        $contents = str_replace('DummyTitle', $title, $contents);
 
         $this->laravel['files']->put(
             $resource,
-            str_replace("Dummy", $name, $contents)
+            str_replace('Dummy', $name, $contents)
         );
 
         $this->line("<info>{$name}Resource file was created:</info> ".str_replace(base_path(), '', $resource));
@@ -73,7 +74,7 @@ class GenerateCommand extends Command
 
         $this->laravel['files']->put(
             $controller,
-            str_replace("Dummy", $name, $contents)
+            str_replace('Dummy', $name, $contents)
         );
 
         $this->line("<info>{$name}Controller file was created:</info> ".str_replace(base_path(), '', $controller));

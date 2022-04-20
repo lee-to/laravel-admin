@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SlideField extends Field
 {
-    public $view = "slide";
+    public $view = 'slide';
 
     public $minValue;
 
@@ -23,43 +23,50 @@ class SlideField extends Field
 
     public $maxName;
 
-    public function minName($minName) {
+    public function minName($minName)
+    {
         $this->minName = $minName;
 
         return $this;
     }
 
-    public function maxName($maxName) {
+    public function maxName($maxName)
+    {
         $this->maxName = $maxName;
 
         return $this;
     }
 
-    public function minValue($minValue) {
+    public function minValue($minValue)
+    {
         $this->minValue = $minValue;
 
         return $this;
     }
 
-    public function maxValue($maxValue) {
+    public function maxValue($maxValue)
+    {
         $this->maxValue = $maxValue;
 
         return $this;
     }
 
-    public function min($min) {
+    public function min($min)
+    {
         $this->min = $min;
 
         return $this;
     }
 
-    public function max($max) {
+    public function max($max)
+    {
         $this->max = $max;
 
         return $this;
     }
 
-    public function step($step) {
+    public function step($step)
+    {
         $this->step = $step;
 
         return $this;

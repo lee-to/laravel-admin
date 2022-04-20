@@ -10,18 +10,22 @@ class HasMany extends Field implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "multi-select";
+    public $view = 'multi-select';
 
     public function indexView($item)
     {
         return collect($item->{$this->relation()})->map(function ($item) {
-            return str_replace("\"", "'", view("admin::components.partials.badge", ["color" => "purple", "value" => $item->{$this->relationViewField()}]));
-        })->implode("");
+            return str_replace("\"", "'", view('admin::components.partials.badge', [
+                'color' => 'purple',
+                'value' => $item->{$this->relationViewField()}
+            ]));
+        })->implode('');
     }
 
-    public function exportView($item) {
+    public function exportView($item)
+    {
         return collect($item->{$this->relation()})->map(function ($item) {
             return $item->{$this->relationViewField()};
-        })->implode(";");
+        })->implode(';');
     }
 }

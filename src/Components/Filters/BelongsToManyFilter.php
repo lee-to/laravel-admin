@@ -10,5 +10,5 @@ class BelongsToManyFilter extends Filter implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "multi-checkbox";
+    public $view = 'multi-checkbox';
 }

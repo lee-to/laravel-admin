@@ -26,4 +26,6 @@
     <div class="flex flex-col mt-8">
         @include("admin::components.form.edit", ["item" => $item])
     </div>
+
+    @include("admin::base.changelog", ["resource" => $resource, "item" => $item])
 @endsection

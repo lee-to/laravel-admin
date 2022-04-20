@@ -5,11 +5,11 @@ namespace Leeto\Admin\Components\Fields;
 
 class Date extends Field
 {
-    public $view = "text";
+    public $view = 'text';
 
-    public $type = "date";
+    public $type = 'date';
 
-    public $format = "Y-m-d H:i:s";
+    public $format = 'Y-m-d H:i:s';
 
     public function format($format) {
         $this->format = $format;

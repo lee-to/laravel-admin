@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Line extends Field
 {
-    public $view = "lines";
+    public $view = 'lines';
 
     public $columns = [];
 
@@ -15,19 +15,20 @@ class Line extends Field
 
     public $options = [];
 
-    public function columns(array $columns) {
+    public function columns(array $columns)
+    {
         $columns = collect($columns)->map(function ($value, $key) {
-            $type = "Text";
+            $type = 'Text';
 
-            if(Str::containsAll($value, ["{", "}"])) {
-                $type = Str::between($value, "{", "}");
-                $value = str_replace([$type, "{", "}"], "", $value);
+            if(Str::containsAll($value, ['{', '}'])) {
+                $type = Str::between($value, '{', '}');
+                $value = str_replace([$type, '{', '}'], '', $value);
             }
 
-            if(Str::containsAll($value, ["[", "]"])) {
-                $options = Str::between($value, "[", "]");
-                $value = str_replace([$options, "[", "]"], "", $value);
-                $this->options[$key] = explode(",", str_replace("'", "", $options));
+            if(Str::containsAll($value, ['[', ']'])) {
+                $options = Str::between($value, '[', ']');
+                $value = str_replace([$options, '[', ']'], '', $value);
+                $this->options[$key] = explode(',', str_replace("'", '', $options));
             }
 
             $this->types[$key] = $type;
@@ -40,7 +41,8 @@ class Line extends Field
         return $this;
     }
 
-    public function formatValues($values) {
+    public function formatValues($values)
+    {
         $result = [];
 
         foreach ($values as $fieldName => $fieldValues) {
@@ -54,7 +56,13 @@ class Line extends Field
 
     public function indexView($item)
     {
-        return view("admin::components.partials.table", ["columns" => $this->columns, "values" => $item->{$this->name()}]);
+        return view(
+            'admin::components.partials.table',
+            [
+                'columns' => $this->columns,
+                'values' => $item->{$this->name()}
+            ]
+        );
     }
 
     public function exportView($item)

@@ -8,11 +8,11 @@ class File extends Field implements FileInterface
 {
     use FileTrait;
 
-    public $view = "file";
+    public $view = 'file';
 
-    public $type = "file";
+    public $type = 'file';
 
-    public $dir = "files";
+    public $dir = 'files';
 
     public $allowedFileExtension = [];
 
@@ -22,22 +22,30 @@ class File extends Field implements FileInterface
             $this->removeable(false);
 
             return collect($item->{$this->name()})->map(function ($value, $key) {
-                return str_replace("\"", "'", view("admin::components.partials.file", [
-                        "value" => $value,
-                        "index" => $key,
-                        "attr" => $this->attributes()
+                return str_replace("\"", "'", view('admin::components.partials.file', [
+                        'value' => $value,
+                        'index' => $key,
+                        'attr' => $this->attributes()
                 ]));
-            })->implode("");
+            })->implode('');
         }
 
-        return view("admin::components.partials.file", ["type" => "single", "value" => $item->{$this->name()}, "field" => $this]);
+        return view(
+            'admin::components.partials.file',
+            [
+                'type' => 'single',
+                'value' => $item->{$this->name()},
+                'field' => $this
+            ]
+        );
     }
 
-    public function exportView($item) {
+    public function exportView($item)
+    {
         if($this->multiple) {
             return collect($item->{$this->name()})->map(function ($value) {
                 return $value;
-            })->implode(";");
+            })->implode(';');
         }
 
         return parent::exportView($item);

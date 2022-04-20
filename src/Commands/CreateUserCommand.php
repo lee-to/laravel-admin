@@ -26,16 +26,20 @@ class CreateUserCommand extends Command
 
     public function handle()
     {
-        $email = $this->ask("Email ?");
-        $name = $this->ask("Name?");
-        $password = $this->ask("Password?");
+        $email = $this->ask('Email?');
+        $name = $this->ask('Name?');
+        $password = $this->ask('Password?');
 
         if($email && $name && $password) {
-            AdminUser::create(["email" => $email, "name" => $name, "password" => Hash::make($password)]);
+            AdminUser::create([
+                'email' => $email,
+                'name' => $name,
+                'password' => Hash::make($password)
+            ]);
 
-            $this->info("User is created");
+            $this->info('User is created');
         } else {
-            $this->error("All params is required");
+            $this->error('All params is required');
         }
     }
 }

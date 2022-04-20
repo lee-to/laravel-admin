@@ -94,7 +94,8 @@ abstract class Filter implements ViewComponent
     /**
      * @return $this
      */
-    public function xModel() {
+    public function xModel()
+    {
         $this->xModel = true;
 
         return $this;

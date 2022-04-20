@@ -5,19 +5,21 @@ namespace Leeto\Admin\Components\Fields;
 
 class SwitchField extends Field
 {
-    public $view = "switch";
+    public $view = 'switch';
 
     public $onValue = 1;
 
     public $offValue = 0;
 
-    public function onValue($onValue) {
+    public function onValue($onValue)
+    {
         $this->onValue = $onValue;
 
         return $this;
     }
 
-    public function offValue($offValue) {
+    public function offValue($offValue)
+    {
         $this->offValue = $offValue;
 
         return $this;
@@ -27,7 +29,13 @@ class SwitchField extends Field
     {
         $this->disabled();
 
-        return view("admin::components.fields.switch", ["value" => $item->{$this->name()}, "attr" => $this->attributes()]);
+        return view(
+            'admin::components.fields.switch',
+            [
+                'value' => $item->{$this->name()},
+                'attr' => $this->attributes()
+            ]
+        );
     }
 
 }

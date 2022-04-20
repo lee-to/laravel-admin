@@ -10,35 +10,47 @@ class Image extends Field implements FileInterface
 {
     use FileTrait;
 
-    public $view = "image";
+    public $view = 'image';
 
-    public $type = "file";
+    public $type = 'file';
 
-    public $dir = "images";
+    public $dir = 'images';
 
     public $allowedFileExtension = ['jpg', 'png', 'gif', 'jpeg'];
 
-    public function src($path, $size = "50x50") {
+    public function src($path, $size = '50x50')
+    {
         return $path ? Storage::url($path) : "https://via.placeholder.com/{$size}.png/4FA7F8/fff?text=PHOTO";
     }
 
-    public function indexView($item) {
+    public function indexView($item)
+    {
         if($this->multiple) {
             $values = collect($item->{$this->name()})->map(function ($value) {
                 return "'".Storage::url($value)."'";
             });
 
-            return view("admin::components.partials.carousel", ["value" => $values->implode(",")]);
+            return view(
+                'admin::components.partials.carousel',
+                ['value' => $values->implode(',')]
+            );
         }
 
-        return view("admin::components.partials.thumbnail", ["type" => "avatar", "value" => $item->{$this->name()}, "field" => $this]);
+        return view(
+            'admin::components.partials.thumbnail',
+            [
+                'type' => 'avatar',
+                'value' => $item->{$this->name()},
+                'field' => $this
+            ]);
     }
 
-    public function exportView($item) {
+    public function exportView($item)
+    {
         if($this->multiple) {
             return collect($item->{$this->name()})->map(function ($value) {
                 return $value;
-            })->implode(";");
+            })->implode(';');
         }
 
         return parent::exportView($item);

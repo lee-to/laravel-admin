@@ -13,19 +13,23 @@ trait LinkTrait
 
     protected $linkName;
 
-    public function hasLink() {
-        return $this->getLinkValue() != "";
+    public function hasLink()
+    {
+        return $this->getLinkValue() != '';
     }
 
-    public function getLinkName() {
+    public function getLinkName()
+    {
         return $this->linkName;
     }
 
-    public function getLinkValue() {
+    public function getLinkValue()
+    {
         return $this->linkValue;
     }
 
-    public function addLink($name, $link) {
+    public function addLink($name, $link)
+    {
         $this->linkValue = $link;
         $this->linkName = $name;
 

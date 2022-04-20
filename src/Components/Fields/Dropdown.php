@@ -10,19 +10,21 @@ class Dropdown extends Field implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "select-dropdown";
+    public $view = 'select-dropdown';
 
-    public $imageField = "";
+    public $imageField = '';
 
-    public $link = "";
+    public $link = '';
 
-    public function imageField($imageField) {
+    public function imageField($imageField)
+    {
         $this->imageField = $imageField;
 
         return $this;
     }
 
-    public function link($link) {
+    public function link($link)
+    {
         $this->link = $link;
 
         return $this;
@@ -30,10 +32,18 @@ class Dropdown extends Field implements RelationInterface
 
     public function indexView($item)
     {
-        return view("admin::components.partials.user", ["link" => route("admin.{$this->link}.edit", $item->id), "image" => Storage::url($item->{$this->relation()}->{$this->imageField}), "value" => $item->{$this->relation()}->{$this->relationViewField()}]);
+        return view(
+            'admin::components.partials.listing_item',
+            [
+                'link' => $this->link ? route("admin.{$this->link}.edit", $item->id) : '',
+                'image' => $this->imageField ? Storage::url($item->{$this->relation()}->{$this->imageField}) : '',
+                'value' => $item->{$this->relation()}->{$this->relationViewField()}
+            ]
+        );
     }
 
-    public function exportView($item) {
+    public function exportView($item)
+    {
         return $item->{$this->relation()}->{$this->relationViewField()};
     }
 }

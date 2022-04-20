@@ -10,5 +10,5 @@ class HasOneFilter extends Filter implements RelationInterface
 {
     use SelectTrait;
 
-    public $view = "select";
+    public $view = 'select';
 }
