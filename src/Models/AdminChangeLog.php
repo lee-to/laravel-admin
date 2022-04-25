@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminChangeLog extends Model
 {
+    protected $with = ['adminUser'];
+
     protected $fillable = [
         'admin_user_id',
         'changelogable_id',

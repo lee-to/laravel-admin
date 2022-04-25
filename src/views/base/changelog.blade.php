@@ -46,10 +46,10 @@
                                             </td>
 
                                             <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $log->states_before[$changedField] }}
+                                                {{ is_array($log->states_before[$changedField]) ? json_encode($log->states_before[$changedField]) : $log->states_before[$changedField] }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $changedValue }}
+                                                {{ is_array($changedValue) ? json_encode($changedValue) : $changedValue }}
                                             </td>
                                         </tr>
                                     @endforeach
