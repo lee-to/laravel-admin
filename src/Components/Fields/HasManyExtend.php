@@ -73,12 +73,6 @@ class HasManyExtend extends Field implements RelationInterface, SubItemInterface
         foreach ($fields as $field) {
             $field->xModel($this->relation());
 
-            if($this->parentRelation()) {
-                $field->setCustomName("{$this->parentRelation()}[:index][{$this->relation()}][:sub_index][{$field->name()}]");
-            } else {
-                $field->setCustomName("{$this->relation()}[:index][{$field->name()}]");
-            }
-
             if($field instanceof HasManyExtend) {
                 $field->subItem = true;
             }

@@ -111,9 +111,13 @@ class FieldComponent extends Component
         }
 
         if ($component->xModel) {
-            $xModelInputName = "item.input_name_{$component->originalName()}";
+            if ($component->parentRelation()) {
+                $xModelInputName = "`{$component->parentRelation()}[\${index}][{$component->xModelRelation}][\${sub_index}][{$component->name()}]`";
+            } else {
+                $xModelInputName = "`{$component->xModelRelation}[\${index}][{$component->name()}]`";
+            }
 
-            $this->attr['_attr'] = "x-model=\"{$component->xModelField()}\" :name='{$xModelInputName}'";
+            $this->attr['_attr'] = "x-model=\"{$component->xModelField()}\" :name=\"{$xModelInputName}\"";
         }
 
         if ($resource->isWhenConditionField($component->name())) {
