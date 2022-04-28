@@ -2,7 +2,6 @@
 
 namespace Leeto\Admin\Traits;
 
-use App\Models\OrderProduct;
 use Leeto\Admin\Components\Fields\FileInterface;
 use Leeto\Admin\Components\Fields\HasMany;
 use Leeto\Admin\Components\Fields\Line;

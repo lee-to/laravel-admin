@@ -2,9 +2,7 @@
 
 namespace Leeto\Admin\Traits;
 
-use App\Models\OrderProduct;
 use Leeto\Admin\Components\Fields\FileInterface;
-use Leeto\Admin\Components\Fields\HasMany;
 use Leeto\Admin\Components\Fields\Line;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -12,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Leeto\Admin\Components\Fields\SlideField;
 use Leeto\Admin\Components\Fields\SubItemInterface;
+use Leeto\Admin\Components\PivotInterface;
 use Leeto\Admin\Components\RelationInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -129,15 +128,18 @@ trait ControllerTrait
                         $value = $field->save();
                         $syncData = is_array($value) ? $value : [];
 
-                        if(isset($field->pivotField)) {
+                        if($field instanceof PivotInterface && $field->getFields()) {
                             $syncDataPivot = [];
 
                             foreach ($syncData as $syncIndex => $syncValue) {
-                                $syncDataPivot[$syncValue] = [
-                                    $field->pivotField => $request->get(
-                                            $field->originalName() . '_' . $field->pivotField
-                                        )[$syncIndex] ?? ''
-                                ];
+                                foreach ($field->getFields() as $pivotField) {
+                                    $syncDataPivot[$syncValue] = [
+                                        $pivotField->originalName() => $request->get(
+                                                $field->originalName() . '_' . $pivotField->originalName()
+                                            )[$syncIndex] ?? ''
+                                    ];
+                                }
+
                             }
 
                             $syncData = $syncDataPivot;

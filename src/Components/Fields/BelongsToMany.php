@@ -3,20 +3,30 @@
 namespace Leeto\Admin\Components\Fields;
 
 
+use Leeto\Admin\Components\PivotInterface;
 use Leeto\Admin\Components\RelationInterface;
 use Leeto\Admin\Traits\Fields\SelectTrait;
 
-class BelongsToMany extends Field implements RelationInterface
+class BelongsToMany extends Field implements RelationInterface, PivotInterface
 {
     use SelectTrait;
 
     public $view = 'multi-checkbox';
 
-    public $pivotField = null;
+    public $fields = [];
 
-    public function withPivot($field)
+    public function getFields()
     {
-        $this->pivotField = $field;
+        return $this->fields;
+    }
+
+    public function fields(array $fields)
+    {
+        $this->fields = $fields;
+
+        foreach ($fields as $field) {
+            $field->setCustomName($this->originalName() . '_' . $field->originalName() . '[]');
+        }
 
         return $this;
     }

@@ -2,14 +2,12 @@
 
 namespace Leeto\Admin\Components;
 
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 use Leeto\Admin\Components\Fields\BelongsToMany;
 use Leeto\Admin\Components\Fields\HasMany;
-use Leeto\Admin\Components\Fields\HasManyExtend;
 use Leeto\Admin\Components\Fields\SlideField;
 use Leeto\Admin\Components\Fields\SubItemInterface;
 use Leeto\Admin\Resources\ResourceInterface;
@@ -104,7 +102,7 @@ class FieldComponent extends Component
 
         $this->attr = $component->attributes();
 
-        if($component instanceof HasMany || $component instanceof BelongsToMany) {
+        if($component instanceof BelongsToMany) {
             if(!Str::of($this->attr['name'])->endsWith('[]')) {
                 $this->attr['name'] = Str::of($this->attr['name'])->append('[]');
             }

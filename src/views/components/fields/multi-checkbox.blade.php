@@ -10,12 +10,17 @@
                 <label class="ml-5" for="{{ $attr["name"] }}_{{ $optionValue }}">{{ $optionName }}</label>
             @endif
 
-            @if(isset($attr['pivotField']) && $attr['pivotField'] != '')
-                <input type="text"
-                       name="{{ $attr['originalName'] }}_{{ $attr['pivotField'] }}[]"
-                       class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4  ml-2 appearance-none leading-normal"
-                       value="{{ $value->firstWhere('id', '=', $optionValue)->pivot->{$attr['pivotField']} ?? '' }}"
-                />
+            @if(isset($attr['fields']))
+                @foreach($attr["fields"] as $field)
+                    <div class="my-4">
+                        {{ $resource->component(
+                        $field,
+                        "fields",
+                        $value->firstWhere('id', '=', $optionValue)->pivot ?? $emptyValue,
+                        true)
+                        }}
+                    </div>
+                @endforeach
             @endif
         </div>
     @endforeach
